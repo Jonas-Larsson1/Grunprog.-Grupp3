@@ -1,4 +1,5 @@
-import { generateGameBoard, drawGameBoard } from './gameBoard.js';
+import { generateGameBoard, drawGameBoard } from './gameBoard.js'
+import { drawEnemies, enemySpawnTimer, updateEnemies } from './enemies.js'
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -15,16 +16,31 @@ startButton.addEventListener('click', () => {
 })
 
 const startGame = (tileSize, width, height) => {
+    const gameBoard = generateGameBoard(tileSize, width, height)
+    const pathCoordinates = gameBoard.visitedTiles.map(tile => ({
+        x: (tile.x * tileSize) + (tileSize / 4),
+        y: (tile.y * tileSize) + (tileSize / 4)
+    }))
+
     requestAnimationFrame(() => {
         tick(ctx, game)
     })
 
+
+    console.log(pathCoordinates)
+    console.log(gameBoard.visitedTiles)
     return {
         tileSize,
         width,
         height,
+        allTiles: gameBoard.allTiles,
+        startTile: gameBoard.startTile,
+        exitTile: gameBoard.exitTile,
 
-        board: generateGameBoard(tileSize, width, height),
+        path: pathCoordinates,
+
+        enemies: [],
+        enemySpawnTimer: 2,
 
         lastTick: Date.now(),
         deltaTime: 0
@@ -38,8 +54,12 @@ const tick = (ctx, game) => {
     game.deltaTime = (currentTick - game.lastTick) / 1000
     game.lastTick = currentTick
 
-
     drawGameBoard(ctx, game)
+    drawEnemies(ctx, game)
+
+    updateEnemies(game)
+
+    enemySpawnTimer(game)
 
     requestAnimationFrame(() => {
         tick(ctx, game)

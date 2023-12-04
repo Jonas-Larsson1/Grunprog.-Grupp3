@@ -14,7 +14,7 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         }
     }
 
-    const startTile = { 
+    let startTile = { 
         x: Math.floor(Math.random() * boardWidth),
         y: Math.floor(Math.random() * boardHeight),
     }
@@ -74,26 +74,34 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         }
     }
 
-    allTiles[startTile.y * boardWidth + startTile.x].special = 'start'
-    allTiles[currentTile.y * boardWidth + currentTile.x].special = 'exit'
+    startTile = allTiles[startTile.y * boardWidth + startTile.x]
+    let exitTile = allTiles[currentTile.y * boardWidth + currentTile.x]
 
-    return allTiles
+    startTile.special = 'start'
+    exitTile.special = 'exit'
+
+    return {
+        allTiles,
+        startTile,
+        exitTile,
+        visitedTiles
+    }
 }
 
 export const drawGameBoard = (ctx, game) => {
     const tileSize = game.tileSize
-    const board = game.board
-    for (let i = 0; i < board.length; i++) {
-        let currentTile = board[i]
+    const allTiles = game.allTiles
+    for (let i = 0; i < allTiles.length; i++) {
+        let currentTile = allTiles[i]
         if (currentTile.path && currentTile.special === '') {
-            ctx.fillStyle = 'silver';
+            ctx.fillStyle = 'silver'
         } else if (currentTile.special === 'start') {
             ctx.fillStyle = 'lightgreen'
         } else if (currentTile.special === 'exit') {
             ctx.fillStyle = 'coral'
         } else {
-            ctx.fillStyle = 'grey';
+            ctx.fillStyle = 'grey'
         }
-        ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize);
+        ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
     }
 }
