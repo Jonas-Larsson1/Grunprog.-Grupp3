@@ -1,30 +1,49 @@
+import { generateGameBoard, drawGameBoard } from './gameBoard.js';
+
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 const startButton = document.getElementById('start')
+
+const tileSize = 16
+canvas.width = tileSize * 32
+canvas.height = tileSize * 32   
+
+let game
+
 startButton.addEventListener('click', () => {
-  startGame()
+    game = startGame(tileSize, canvas.width, canvas.height)
 })
 
-let lastTick, 
-currentTick, 
-deltaTime
+const startGame = (tileSize, width, height) => {
+    requestAnimationFrame(() => {
+        tick(ctx, game)
+    })
 
-canvas.width = 640
-canvas.height = 640
+    return {
+        tileSize,
+        width,
+        height,
 
-const startGame = () => {
-    lastTick = Date.now();
-    requestAnimationFrame(tick)
+        board: generateGameBoard(tileSize, width, height),
+
+        lastTick: Date.now(),
+        deltaTime: 0
+    }
 }
 
-const tick = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+const tick = (ctx, game) => {
+    ctx.clearRect(0, 0, game.width, game.height)
 
-    currentTick = Date.now()
-    deltaTime = (currentTick - lastTick) / 1000
-    lastTick = currentTick
+    let currentTick = Date.now()
+    game.deltaTime = (currentTick - game.lastTick) / 1000
+    game.lastTick = currentTick
 
-    requestAnimationFrame(tick)
+
+    drawGameBoard(ctx, game)
+
+    requestAnimationFrame(() => {
+        tick(ctx, game)
+    })
 }
 
     
