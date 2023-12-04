@@ -26,7 +26,7 @@ const startGame = (tileSize, width, height) => {
         tick(ctx, game)
     })
 
-
+    console.log(gameBoard.visitedTiles)
     return {
         tileSize,
         width,

@@ -74,6 +74,7 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         }
     }
 
+    visitedTiles.push(currentTile)
     startTile = allTiles[startTile.y * boardWidth + startTile.x]
     let exitTile = allTiles[currentTile.y * boardWidth + currentTile.x]
 

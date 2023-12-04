@@ -18,8 +18,9 @@ export const enemySpawnTimer = (game) => {
 export const updateEnemies = (game) => {
     const margin = 1
 
-    game.enemies.forEach(enemy => {
+    game.enemies.forEach((enemy, index) => {
         const target = game.path[enemy.pathIndex]
+
         const speed = enemy.vel * game.deltaTime
 
         const distanceX = Math.round(Math.abs(enemy.x - target.x))
@@ -31,12 +32,20 @@ export const updateEnemies = (game) => {
         else if (enemy.y > target.y) enemy.y -= speed
 
         if (distanceX <= margin && distanceY <= margin) {
-            enemy.pathIndex++
+            if (enemy.pathIndex < game.path.length - 1) {
+                enemy.pathIndex++
+            } else {
+                game.enemies.splice(index, 1)
+            }
         }
     })
 }
 
 export const drawEnemies = (ctx, game) => {
+    if (game.enemies.length > 0) {
+        console.log(game.enemies[0].pathIndex)
+    }
+
     game.enemies.forEach(enemy => {
         ctx.fillStyle = 'red'
         ctx.fillRect(enemy.x, enemy.y, enemy.size, enemy.size)
@@ -44,13 +53,11 @@ export const drawEnemies = (ctx, game) => {
 }
 
 export const spawnEnemy = (game) => {
-    console.log(game.enemies[0])
-
     const enemy = {
         x: (game.startTile.x * game.tileSize) + (game.tileSize / 4),
         y: (game.startTile.y * game.tileSize) + (game.tileSize / 4),
         size: game.tileSize / 2,
-        vel: 25,
+        vel: 50,
         pathIndex: 0,
     }
 
