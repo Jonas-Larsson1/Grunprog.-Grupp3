@@ -4,9 +4,9 @@ const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 const startButton = document.getElementById('start')
 
-const tileSize = 32
-canvas.width = tileSize * 16
-canvas.height = tileSize * 16   
+const tileSize = 64
+canvas.width = tileSize * 8
+canvas.height = tileSize * 8   
 
 let game
 

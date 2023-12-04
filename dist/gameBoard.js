@@ -1,28 +1,31 @@
 export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
-    const gameBoard = []
+    const allTiles = []
     const boardWidth = canvasWidth / tileSize
     const boardHeight = canvasHeight / tileSize
 
     for (let y = 0; y < boardHeight; y++) {
         for (let x = 0; x < boardWidth; x++) {
-            gameBoard.push({
+            allTiles.push({
                 x,
                 y,
                 path: false,
+                special: ''
             })
         }
     }
 
-    const startTile = { x: 0, y: 1 }
-    const exitTile = { x: boardWidth - 1, y: boardHeight - 2}
+    const startTile = { 
+        x: Math.floor(Math.random() * boardWidth),
+        y: Math.floor(Math.random() * boardHeight),
+    }
 
-    let currentTile = { x: 0, y: 1 }
+    const pathsTilesToGenerate = (boardHeight * boardWidth) / 2
+
+    let currentTile = startTile
     let visitedTiles = []
-
     
-    // while (currentTile.x !== boardWidth -1) {
-    for (let n = 0; n < 50; n++) {
-        gameBoard[currentTile.y * boardWidth + currentTile.x].path = true
+    for (let n = 0; n < pathsTilesToGenerate; n++) {
+        allTiles[currentTile.y * boardWidth + currentTile.x].path = true
         visitedTiles.push(currentTile)
 
         const validAdjacentTiles = (tile) => {
@@ -46,7 +49,7 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
             let adjPathCount = 0
         
             for (const adjTile of adjacentTiles) {
-                if (gameBoard[adjTile.y * boardWidth + adjTile.x].path) {
+                if (allTiles[adjTile.y * boardWidth + adjTile.x].path) {
                     adjPathCount++
                 }
             }
@@ -57,49 +60,10 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         const potentialTiles = validAdjacentTiles(currentTile).filter(adjTile => {
             return (
                 !visitedTiles.some(visitedTile => visitedTile === `${adjTile.x},${adjTile.y}`) &&
-                !gameBoard[adjTile.y * boardWidth + adjTile.x].path &&
+                !allTiles[adjTile.y * boardWidth + adjTile.x].path &&
                 isValidTile(adjTile)
-            );
-        });
-
-        // const isValidTile = (tile) => {
-
-        //     const adjacentTiles = validAdjacentTiles(tile)
-
-        //     let adjPathCount = 0
-
-        //     for (tile of adjacentTiles) {
-        //         if (gameBoard[tile.y * boardWidth + tile.x].path) {
-        //             adjPathCount++
-        //         }
-        //     }
-
-        //     if (adjPathCount > 1) {
-
-        //         return false
-        //     } else {
-
-        //         return true
-        //     }
-
-        // } 
-
-        // const potentialTiles = validAdjacentTiles(currentTile).filter(adjTile => {
-        //     !visitedTiles.some(visitedTile => {
-        //         visitedTile === `${adjTile.x},${adjTile.y}`
-        //     }) &&
-        //     !gameBoard[adjTile.y * boardWidth + adjTile.x].path && 
-        //     isValidTile(adjTile)
-        // })
-        
-        // const potentialTiles = validAdjacentTiles(currentTile).filter(adjTile =>
-        //     !visitedTiles.some(visitedTile => 
-        //         visitedTile ===`${adjTile.x},${adjTile.y}`) &&
-        //     !gameBoard[adjTile.y * boardWidth + adjTile.x].path && 
-        //     validAdjacentTiles(adjTile).filter(nextAdjTile => 
-        //         !gameBoard[nextAdjTile.y * boardWidth + nextAdjTile.x].path
-        //     )
-        // )
+            )
+        })
 
         if (potentialTiles.length > 0) {
             const nextTile = potentialTiles[Math.floor(Math.random() * potentialTiles.length)] 
@@ -110,7 +74,10 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         }
     }
 
-    return gameBoard
+    allTiles[startTile.y * boardWidth + startTile.x].special = 'start'
+    allTiles[currentTile.y * boardWidth + currentTile.x].special = 'exit'
+
+    return allTiles
 }
 
 export const drawGameBoard = (ctx, game) => {
@@ -118,12 +85,15 @@ export const drawGameBoard = (ctx, game) => {
     const board = game.board
     for (let i = 0; i < board.length; i++) {
         let currentTile = board[i]
-        if (currentTile.path) {
-            ctx.fillStyle = 'green';
-            ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize);
+        if (currentTile.path && currentTile.special === '') {
+            ctx.fillStyle = 'silver';
+        } else if (currentTile.special === 'start') {
+            ctx.fillStyle = 'lightgreen'
+        } else if (currentTile.special === 'exit') {
+            ctx.fillStyle = 'coral'
         } else {
             ctx.fillStyle = 'grey';
-            ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize);
         }
+        ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize);
     }
 }
