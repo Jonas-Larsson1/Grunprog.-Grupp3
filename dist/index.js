@@ -27,8 +27,6 @@ const startGame = (tileSize, width, height) => {
     })
 
 
-    console.log(pathCoordinates)
-    console.log(gameBoard.visitedTiles)
     return {
         tileSize,
         width,
