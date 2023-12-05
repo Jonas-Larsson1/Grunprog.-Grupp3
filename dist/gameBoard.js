@@ -102,6 +102,8 @@ export const drawGameBoard = (ctx, game) => {
             ctx.fillStyle = 'lightgreen'
         } else if (currentTile.special === 'exit') {
             ctx.fillStyle = 'coral'
+        } else if (currentTile.special === 'clicked') {
+            ctx.fillStyle = 'blue'
         } else {
             ctx.fillStyle = 'grey'
         }

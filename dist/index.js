@@ -16,7 +16,6 @@ startButton.addEventListener('click', () => {
     game = startGame(tileSize, canvas.width, canvas.height, canvas)
 })
 
-
 const startGame = (tileSize, width, height, canvas) => {
     const gameBoard = generateGameBoard(tileSize, width, height)
     const pathCoordinates = gameBoard.pathTiles.map(tile => ({
@@ -25,7 +24,7 @@ const startGame = (tileSize, width, height, canvas) => {
     }))
 
     const allTileCoordinates = gameBoard.allTiles.map(tile => {
-        return { x: tile.x * tileSize, y: tile.y * tileSize}
+        return { x: tile.x * tileSize, y: tile.y * tileSize, path: tile.path, special: tile.special }
     })
 
     canvas.addEventListener('click', (event) => {
@@ -35,6 +34,9 @@ const startGame = (tileSize, width, height, canvas) => {
     requestAnimationFrame(() => {
         tick(ctx, game)
     })
+
+    // console.log(gameBoard.allTiles)
+    // console.log(allTileCoordinates)
 
     return {
         tileSize,

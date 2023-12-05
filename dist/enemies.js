@@ -1,12 +1,3 @@
-// export class Enemy {
-//     constructor(x, y, speed, health) {
-//         this.x = x;
-//         this.y = y;
-//         this.speed = speed;
-//         this.health = health;
-//     }
-// }
-
 export const enemySpawnTimer = (game) => {
     game.enemySpawnTimer -= game.deltaTime
     if (game.enemySpawnTimer <= 0) {
@@ -42,9 +33,6 @@ export const updateEnemies = (game) => {
 }
 
 export const drawEnemies = (ctx, game) => {
-    // if (game.enemies.length > 0) {
-    //     console.log(game.enemies[0].pathIndex)
-    // }
 
     game.enemies.forEach(enemy => {
         ctx.fillStyle = 'red'
