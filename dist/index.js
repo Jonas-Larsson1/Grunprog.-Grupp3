@@ -1,5 +1,6 @@
 import { generateGameBoard, drawGameBoard } from './gameBoard.js'
 import { drawEnemies, enemySpawnTimer, updateEnemies } from './enemies.js'
+import { clickTile } from './selectTile.js'
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -12,15 +13,24 @@ canvas.height = tileSize * 8
 let game
 
 startButton.addEventListener('click', () => {
-    game = startGame(tileSize, canvas.width, canvas.height)
+    game = startGame(tileSize, canvas.width, canvas.height, canvas)
 })
 
-const startGame = (tileSize, width, height) => {
+
+const startGame = (tileSize, width, height, canvas) => {
     const gameBoard = generateGameBoard(tileSize, width, height)
     const pathCoordinates = gameBoard.pathTiles.map(tile => ({
         x: (tile.x * tileSize) + (tileSize / 4),
         y: (tile.y * tileSize) + (tileSize / 4)
     }))
+
+    const allTileCoordinates = gameBoard.allTiles.map(tile => {
+        return { x: tile.x * tileSize, y: tile.y * tileSize}
+    })
+
+    canvas.addEventListener('click', (event) => {
+        clickTile(event, game, canvas)
+    })
 
     requestAnimationFrame(() => {
         tick(ctx, game)
@@ -35,6 +45,7 @@ const startGame = (tileSize, width, height) => {
         exitTile: gameBoard.exitTile,
 
         path: pathCoordinates,
+        allTileCoordinates: allTileCoordinates, 
 
         enemies: [],
         enemySpawnTimer: 2,

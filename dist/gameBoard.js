@@ -58,18 +58,13 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         
             return adjPathCount <= 1
         };
-        
-       
 
         const potentialTiles = validAdjacentTiles(currentTile).filter(adjTile => {
-            console.log(adjTile)
-            console.log(visitedTiles)
-            console.log(visitedTiles.some((vt) => vt.x === adjTile.x && vt.y === adjTile.y))
             return (
                 !visitedTiles.some((vt) => vt.x === adjTile.x && vt.y === adjTile.y) &&
                 !allTiles[adjTile.y * boardWidth + adjTile.x].path &&
                 isValidTile(adjTile)
-            )
+            ) 
         })
 
         if (potentialTiles.length > 0) {
@@ -80,8 +75,6 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
             currentTile = previousTile
         }
     }
-
-    //TODO returna en array med path tiles som poppas istället för visitiedtiles
 
     pathTiles.push(currentTile)
     startTile = allTiles[startTile.y * boardWidth + startTile.x]
@@ -97,7 +90,7 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         pathTiles
     }
 }
-
+ 
 export const drawGameBoard = (ctx, game) => {
     const tileSize = game.tileSize
     const allTiles = game.allTiles
