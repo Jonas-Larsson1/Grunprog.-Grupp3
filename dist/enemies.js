@@ -11,7 +11,7 @@ export const enemySpawnTimer = (game) => {
     game.enemySpawnTimer -= game.deltaTime
     if (game.enemySpawnTimer <= 0) {
         spawnEnemy(game)
-        game.enemySpawnTimer = Math.random() * 2 + 2
+        game.enemySpawnTimer = Math.random() * 3 + 1
     }
 }
 
@@ -42,9 +42,9 @@ export const updateEnemies = (game) => {
 }
 
 export const drawEnemies = (ctx, game) => {
-    if (game.enemies.length > 0) {
-        console.log(game.enemies[0].pathIndex)
-    }
+    // if (game.enemies.length > 0) {
+    //     console.log(game.enemies[0].pathIndex)
+    // }
 
     game.enemies.forEach(enemy => {
         ctx.fillStyle = 'red'

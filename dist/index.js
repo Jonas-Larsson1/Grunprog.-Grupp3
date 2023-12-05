@@ -17,7 +17,7 @@ startButton.addEventListener('click', () => {
 
 const startGame = (tileSize, width, height) => {
     const gameBoard = generateGameBoard(tileSize, width, height)
-    const pathCoordinates = gameBoard.visitedTiles.map(tile => ({
+    const pathCoordinates = gameBoard.pathTiles.map(tile => ({
         x: (tile.x * tileSize) + (tileSize / 4),
         y: (tile.y * tileSize) + (tileSize / 4)
     }))
@@ -26,7 +26,6 @@ const startGame = (tileSize, width, height) => {
         tick(ctx, game)
     })
 
-    console.log(gameBoard.visitedTiles)
     return {
         tileSize,
         width,

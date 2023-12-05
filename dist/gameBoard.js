@@ -23,10 +23,12 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
 
     let currentTile = startTile
     let visitedTiles = []
+    let pathTiles = []
     
     for (let n = 0; n < pathsTilesToGenerate; n++) {
         allTiles[currentTile.y * boardWidth + currentTile.x].path = true
         visitedTiles.push(currentTile)
+        pathTiles.push(currentTile)
 
         const validAdjacentTiles = (tile) => {
             const allAdjacentTiles = ([
@@ -57,9 +59,14 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
             return adjPathCount <= 1
         };
         
+       
+
         const potentialTiles = validAdjacentTiles(currentTile).filter(adjTile => {
+            console.log(adjTile)
+            console.log(visitedTiles)
+            console.log(visitedTiles.some((vt) => vt.x === adjTile.x && vt.y === adjTile.y))
             return (
-                !visitedTiles.some(visitedTile => visitedTile === `${adjTile.x},${adjTile.y}`) &&
+                !visitedTiles.some((vt) => vt.x === adjTile.x && vt.y === adjTile.y) &&
                 !allTiles[adjTile.y * boardWidth + adjTile.x].path &&
                 isValidTile(adjTile)
             )
@@ -69,12 +76,14 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
             const nextTile = potentialTiles[Math.floor(Math.random() * potentialTiles.length)] 
             currentTile = nextTile
         } else {
-            const previousTile = visitedTiles.pop()
+            const previousTile = pathTiles.pop()
             currentTile = previousTile
         }
     }
 
-    visitedTiles.push(currentTile)
+    //TODO returna en array med path tiles som poppas istället för visitiedtiles
+
+    pathTiles.push(currentTile)
     startTile = allTiles[startTile.y * boardWidth + startTile.x]
     let exitTile = allTiles[currentTile.y * boardWidth + currentTile.x]
 
@@ -85,7 +94,7 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         allTiles,
         startTile,
         exitTile,
-        visitedTiles
+        pathTiles
     }
 }
 
