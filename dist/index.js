@@ -2,6 +2,7 @@ import { generateGameBoard, drawGameBoard } from './gameBoard.js'
 import { drawEnemies, enemySpawnTimer, updateEnemies } from './enemies.js'
 import { clickTile } from './selectTile.js'
 
+
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 const startButton = document.getElementById('start')
@@ -28,6 +29,7 @@ const startGame = (tileSize, width, height, canvas) => {
     })
 
     canvas.addEventListener('click', (event) => {
+        console.log('Canvas clicked!');
         clickTile(event, game, canvas)
     })
 
@@ -52,6 +54,9 @@ const startGame = (tileSize, width, height, canvas) => {
         enemies: [],
         enemySpawnTimer: 2,
 
+        towers: [],
+        bullets: [],
+
         lastTick: Date.now(),
         deltaTime: 0
     }
@@ -75,5 +80,3 @@ const tick = (ctx, game) => {
         tick(ctx, game)
     })
 }
-
-    

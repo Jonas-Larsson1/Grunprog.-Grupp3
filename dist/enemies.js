@@ -1,3 +1,5 @@
+import { spawnBullet } from './bullets.js';
+
 export const enemySpawnTimer = (game) => {
     game.enemySpawnTimer -= game.deltaTime
     if (game.enemySpawnTimer <= 0) {
@@ -29,6 +31,24 @@ export const updateEnemies = (game) => {
                 game.enemies.splice(index, 1)
             }
         }
+
+            game.towers.forEach((tower) => {
+                const distanceToEnemy = Math.sqrt(
+                    Math.pow(enemy.x - tower.x, 2) + Math.pow(enemy.y - tower.y, 2)
+                );
+    
+                if (distanceToEnemy <= tower.attackRange) {
+                    // console.log('Enemy in range!');
+                    const currentTime = Date.now() / 1000;
+                    if (currentTime - tower.lastAttackTime >= tower.attackCooldown) {
+                        console.log('Tower can attack!');
+                        enemy.health -= tower.damage;
+                        console.log('Enemy health after attack:', enemy.health);
+                        spawnBullet(game, tower, enemy);
+                        tower.lastAttackTime = currentTime;
+                    }
+                }
+            })
     })
 }
 
@@ -47,6 +67,7 @@ export const spawnEnemy = (game) => {
         size: game.tileSize / 2,
         vel: 50,
         pathIndex: 0,
+        health: 100
     }
 
     game.enemies.push(enemy)
