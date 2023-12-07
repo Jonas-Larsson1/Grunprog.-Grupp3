@@ -41,9 +41,9 @@ export const updateEnemies = (game) => {
                     // console.log('Enemy in range!');
                     const currentTime = Date.now() / 1000;
                     if (currentTime - tower.lastAttackTime >= tower.attackCooldown) {
-                        console.log('Tower can attack!');
+                        // console.log('Tower can attack!');
                         enemy.health -= tower.damage;
-                        console.log('Enemy health after attack:', enemy.health);
+                        // console.log('Enemy health after attack:', enemy.health);
                         spawnBullet(game, tower, enemy);
                         tower.lastAttackTime = currentTime;
                     }

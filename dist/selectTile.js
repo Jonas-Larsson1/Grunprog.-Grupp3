@@ -1,7 +1,6 @@
-import { createBullet, updateBullets, spawnBullet } from './bullets.js'
 
 export const clickTile = (event, game, canvas) => {
-    console.log('Tile clicked!');
+    // console.log('Tile clicked!');
     const rect = canvas.getBoundingClientRect()
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
@@ -11,14 +10,18 @@ export const clickTile = (event, game, canvas) => {
 
     const tileToChange = game.allTiles.findIndex((tile) => tile.x === tileX && tile.y === tileY)
     
-    const clickedTile = game.allTiles[tileToChange];
+    const clickedTile = game.allTiles[tileToChange]
 
-    // placera ett torn på en clickedTile
+    spawnTower(clickedTile, game)
 
+    return 
+}
+
+const spawnTower = (clickedTile, game) => {
     if (clickedTile.special === '' && !clickedTile.path) {
         const tower = {
-            x: tileX * game.tileSize,
-            y: tileY * game.tileSize,
+            x: clickedTile.x * game.tileSize,
+            y: clickedTile.y * game.tileSize,
             size: game.tileSize / 2,
             attackRange: 100,
             damage: 10,
@@ -28,11 +31,5 @@ export const clickTile = (event, game, canvas) => {
 
         game.towers.push(tower);
         clickedTile.special = 'tower';
-
-    // fiendens position
-    const targetEnemy  = game.enemies[0];
-    if (targetEnemy) {
-        spawnBullet(game, tower, targetEnemy);
-    }
     }
 }

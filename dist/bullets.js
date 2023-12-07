@@ -40,7 +40,7 @@ export const spawnBullet = (game, tower, enemy) => {
 
     for (let i = 0; i < numBullets; i++) {
         // räkna ut position och skapa en ny kula 
-        const bullet = createBullet(startX + i * deltaX, startY + i * deltaY, targetX, targetY, 300); // för att skapa en rad 
+        const bullet = createBullet(startX, startY, targetX, targetY, 300); // för att skapa en rad 
         game.bullets.push(bullet);
     }
 };
