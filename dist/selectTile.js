@@ -20,8 +20,8 @@ export const clickTile = (event, game, canvas) => {
 const spawnTower = (clickedTile, game) => {
     if (clickedTile.special === '' && !clickedTile.path) {
         const tower = {
-            x: clickedTile.x * game.tileSize,
-            y: clickedTile.y * game.tileSize,
+            x: (clickedTile.x * game.tileSize) + (game.tileSize / 4),
+            y: (clickedTile.y * game.tileSize) + (game.tileSize / 4),
             size: game.tileSize / 2,
             attackRange: 100,
             damage: 10,

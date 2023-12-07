@@ -39,24 +39,6 @@ export const updateEnemies = (game) => {
                 game.enemies.splice(index, 1)
             }
         }
-
-            game.towers.forEach((tower) => {
-                const distanceToEnemy = Math.sqrt(
-                    Math.pow(enemy.x - tower.x, 2) + Math.pow(enemy.y - tower.y, 2)
-                );
-    
-                if (distanceToEnemy <= tower.attackRange) {
-                    // console.log('Enemy in range!');
-                    const currentTime = Date.now() / 1000;
-                    if (currentTime - tower.lastAttackTime >= tower.attackCooldown) {
-                        // console.log('Tower can attack!');
-                        enemy.health -= tower.damage;
-                        // console.log('Enemy health after attack:', enemy.health);
-                        spawnBullet(game, tower, enemy);
-                        tower.lastAttackTime = currentTime;
-                    }
-                }
-            })
     })
 }
 

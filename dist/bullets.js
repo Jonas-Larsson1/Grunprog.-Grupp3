@@ -14,36 +14,27 @@ export const createBullet = (startX, startY, targetX, targetY, speed) => {
         targetY: targetY,
         speed: speed,
         speedX: speedX,
-        speedY: speedY
+        speedY: speedY,
+        lifeTime: 1,
     };
 };
 
 export const updateBullets = (game) => {
     game.bullets.forEach((bullet, index) => {
-    //     game.enemies.forEach(enemy => {
-    //         if (checkCollision(bullet, enemy)) {
-    //             console.log('träff')
-    //         }
-    //     })
 
+        bullet.lifeTime -= game.deltaTime
 
-
-        bullet.x += bullet.speedX * game.deltaTime;
-        bullet.y += bullet.speedY * game.deltaTime;
-
-        // försökte ta bort kulor men misslyckades 
-        // if (distance < bullet.speed * game.deltaTime || bullet.lifetime <= 0) {
-        //     game.bullets.splice(index, 1);
-        // } else {
-        //     bullet.lifetime -= game.deltaTime;
-        // }
-
+        if (bullet.lifeTime <= 0) {
+            game.bullets.splice(index, 1)
+        } else {
+            bullet.x += bullet.speedX * game.deltaTime;
+            bullet.y += bullet.speedY * game.deltaTime;
+        }
     });
 };
 
 export const spawnBullet = (game, tower, enemy) => {
     if (enemy) {
-
         const numBullets = 1; 
         const startX = tower.x + tower.size / 2;
         const startY = tower.y + tower.size / 2;
@@ -54,8 +45,9 @@ export const spawnBullet = (game, tower, enemy) => {
         
         for (let i = 0; i < numBullets; i++) {
             // räkna ut position och skapa en ny kula 
+            console.log('spawned bullet')
             const bullet = createBullet(startX, startY, targetX, targetY, 300); // för att skapa en rad 
-        game.bullets.push(bullet);
+            game.bullets.push(bullet);
+        }
     }
-}
 }
