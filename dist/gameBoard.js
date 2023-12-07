@@ -1,3 +1,4 @@
+
 export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
     const allTiles = []
     const boardWidth = canvasWidth / tileSize
@@ -109,4 +110,14 @@ export const drawGameBoard = (ctx, game) => {
         }
         ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
     }
+
+    game.towers.forEach((tower) => {
+        ctx.fillStyle = 'orange'; 
+        ctx.fillRect(tower.x, tower.y, tower.size, tower.size);
+    });
+
+    game.bullets.forEach((bullet) => {
+        ctx.fillStyle = 'yellow';
+        ctx.fillRect(bullet.x, bullet.y, 5, 5);
+    });
 }
