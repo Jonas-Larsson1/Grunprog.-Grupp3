@@ -16,6 +16,7 @@ export const updateEnemies = (game) => {
             if (checkCollision(enemy, bullet)) {
                 game.bullets.splice(bulletIndex, 1)
                 game.enemies.splice(index, 1)
+                return
             }
         })
 

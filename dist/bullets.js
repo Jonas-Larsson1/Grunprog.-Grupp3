@@ -1,11 +1,20 @@
 export const createBullet = (startX, startY, targetX, targetY, speed) => {
+    const deltaX = targetX - startX;
+    const deltaY = targetY - startY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    const speedX = (deltaX / distance) * speed;
+    const speedY = (deltaY / distance) * speed;
+
     return {
         x: startX,
         y: startY,
         size: 5,
         targetX: targetX,
         targetY: targetY,
-        speed: speed
+        speed: speed,
+        speedX: speedX,
+        speedY: speedY
     };
 };
 
@@ -17,15 +26,10 @@ export const updateBullets = (game) => {
     //         }
     //     })
 
-        const deltaX = bullet.targetX - bullet.x;
-        const deltaY = bullet.targetY - bullet.y;
-        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-        const speedX = (deltaX / distance) * bullet.speed;
-        const speedY = (deltaY / distance) * bullet.speed;
 
-        bullet.x += speedX * game.deltaTime;
-        bullet.y += speedY * game.deltaTime;
+        bullet.x += bullet.speedX * game.deltaTime;
+        bullet.y += bullet.speedY * game.deltaTime;
 
         // försökte ta bort kulor men misslyckades 
         // if (distance < bullet.speed * game.deltaTime || bullet.lifetime <= 0) {
@@ -40,7 +44,7 @@ export const updateBullets = (game) => {
 export const spawnBullet = (game, tower, enemy) => {
     if (enemy) {
 
-        const numBullets = 5; 
+        const numBullets = 1; 
         const startX = tower.x + tower.size / 2;
         const startY = tower.y + tower.size / 2;
         const targetX = enemy.x;
