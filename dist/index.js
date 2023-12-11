@@ -1,12 +1,14 @@
 import { generateGameBoard, drawGameBoard } from './gameBoard.js'
 import { drawEnemies, enemySpawnTimer, updateEnemies } from './enemies.js'
 import { clickTile } from './selectTile.js'
-import { updateTowers } from './towers.js'
+import { updateTowers, removeTower, spawnTower } from './towers.js'
 import { updateBullets } from './bullets.js'
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 const startButton = document.getElementById('start')
+const towerSpawn = document.getElementById('towerSpawn')
+const towerRemove = document.getElementById('towerRemove')
 
 const tileSize = 64
 canvas.width = tileSize * 8
@@ -17,6 +19,7 @@ let game
 startButton.addEventListener('click', () => {
     game = startGame(tileSize, canvas.width, canvas.height, canvas)
 })
+
 
 const startGame = (tileSize, width, height, canvas) => {
     const gameBoard = generateGameBoard(tileSize, width, height)
@@ -32,6 +35,13 @@ const startGame = (tileSize, width, height, canvas) => {
     canvas.addEventListener('click', (event) => {
         // console.log('Canvas clicked!');
         clickTile(event, game, canvas)
+    })
+
+    towerSpawn.addEventListener('click', () => {
+        spawnTower(clickTile(null, game, null), game)
+    })
+    towerRemove.addEventListener('click', () => {
+        removeTower(clickTile(null, game, null), game)
     })
 
     requestAnimationFrame(() => {

@@ -10,6 +10,7 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
                 x,
                 y,
                 path: false,
+                selected: false,
                 special: ''
             })
         }
@@ -103,8 +104,8 @@ export const drawGameBoard = (ctx, game) => {
             ctx.fillStyle = 'lightgreen'
         } else if (currentTile.special === 'exit') {
             ctx.fillStyle = 'coral'
-        } else if (currentTile.special === 'clicked') {
-            ctx.fillStyle = 'blue'
+        } else if (currentTile.selected) {
+            ctx.fillStyle = 'red'
         } else {
             ctx.fillStyle = 'grey'
         }

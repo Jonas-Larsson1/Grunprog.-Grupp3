@@ -1,35 +1,34 @@
-
 export const clickTile = (event, game, canvas) => {
-    // console.log('Tile clicked!');
-    const rect = canvas.getBoundingClientRect()
-    const x = event.clientX - rect.left
-    const y = event.clientY - rect.top
+    let oldSelectedTile
 
-    const tileX = Math.floor(x / game.tileSize)
-    const tileY = Math.floor(y / game.tileSize)
+    game.allTiles.forEach((tile, index) => {
+        if (tile.selected) {
+            oldSelectedTile = game.allTiles[index]
+            tile.selected = !tile.selected
+        }
+    })
 
-    const tileToChange = game.allTiles.findIndex((tile) => tile.x === tileX && tile.y === tileY)
-    
-    const clickedTile = game.allTiles[tileToChange]
+    if (event && canvas) {
+        
+        const rect = canvas.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const y = event.clientY - rect.top
+        
+        const tileX = Math.floor(x / game.tileSize)
+        const tileY = Math.floor(y / game.tileSize)
+        
+        const tileToChange = game.allTiles.findIndex((tile) => tile.x === tileX && tile.y === tileY)
+        
+        const newSelectedTile = game.allTiles[tileToChange]
 
-    spawnTower(clickedTile, game)
-
-    return 
-}
-
-const spawnTower = (clickedTile, game) => {
-    if (clickedTile.special === '' && !clickedTile.path) {
-        const tower = {
-            x: (clickedTile.x * game.tileSize) + (game.tileSize / 4),
-            y: (clickedTile.y * game.tileSize) + (game.tileSize / 4),
-            size: game.tileSize / 2,
-            attackRange: 100,
-            damage: 10,
-            attackCooldown: 1,
-            lastAttackTime: 0
-        };
-
-        game.towers.push(tower);
-        clickedTile.special = 'tower';
+        if (!newSelectedTile.path) {
+            newSelectedTile.selected = !newSelectedTile.selected
+            return newSelectedTile
+        }
     }
-}
+
+    return oldSelectedTile
+ }
+    
+
+

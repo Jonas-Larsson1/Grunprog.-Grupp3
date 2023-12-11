@@ -1,5 +1,3 @@
-import { spawnBullet } from './bullets.js';
-
 export const enemySpawnTimer = (game) => {
     game.enemySpawnTimer -= game.deltaTime
     if (game.enemySpawnTimer <= 0) {
