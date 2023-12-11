@@ -4,6 +4,49 @@ import { clickTile } from './selectTile.js'
 import { updateTowers, removeTower, spawnTower } from './towers.js'
 import { updateBullets } from './bullets.js'
 
+// pause och unpause
+let isPaused = false;
+let unpauseDelay = 20; 
+let unpauseTimeout;
+let pauseStartTime;
+let pausedTime = 0;
+
+// fiendernas urspurngliga positioner under uppehåll 
+let initialEnemyPositions = [];
+
+
+window.addEventListener('blur', function(){
+    isPaused = true;
+    pauseStartTime = Date.now();
+    initialEnemyPositions = game.enemies.map(enemy => ({ x: enemy.x, y: enemy.y }));
+});
+
+window.addEventListener('focus', function(){
+    clearTimeout(unpauseTimeout);
+
+    // unpause after delay 
+    unpauseTimeout = setTimeout(() => {
+        isPaused = false;
+        pausedTime += Date.now() - pauseStartTime;
+
+        // fiendernas positioner baserad på en paus
+        game.enemies.forEach((enemy, index) => {
+            const initialPosition = initialEnemyPositions[index];
+            if (initialPosition) {
+                const elapsedTime = pausedTime / 1000; 
+                const speed = enemy.vel;
+                enemy.x = initialPosition.x + elapsedTime * speed;
+                enemy.y = initialPosition.y;
+            }
+        });
+
+        // tidsåterställning
+        pausedTime = 0;
+
+        requestAnimationFrame(() => tick(ctx, game));
+    }, unpauseDelay);
+});
+
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 const startButton = document.getElementById('start')
@@ -14,7 +57,9 @@ const tileSize = 64
 canvas.width = tileSize * 8
 canvas.height = tileSize * 8   
 
-let game
+let game;
+
+
 
 startButton.addEventListener('click', () => {
     game = startGame(tileSize, canvas.width, canvas.height, canvas)
@@ -74,6 +119,8 @@ const startGame = (tileSize, width, height, canvas) => {
 }
 
 const tick = (ctx, game) => {
+
+
     ctx.clearRect(0, 0, game.width, game.height)
 
     let currentTick = Date.now()
@@ -83,13 +130,21 @@ const tick = (ctx, game) => {
     drawGameBoard(ctx, game)
     drawEnemies(ctx, game)
 
-    updateEnemies(game)
-    updateTowers(game)
-    updateBullets(game)
+    // updateEnemies(game)
+    // updateTowers(game)
+    // updateBullets(game)
 
-    enemySpawnTimer(game)
+    // enemySpawnTimer(game)
+
+    if (!isPaused) {
+        updateEnemies(game)
+        updateTowers(game)
+        updateBullets(game)
+        enemySpawnTimer(game)
+    }
+
 
     requestAnimationFrame(() => {
-        tick(ctx, game)
+       if (!isPaused) { tick(ctx, game)}
     })
 }
