@@ -99,15 +99,19 @@ export const drawGameBoard = (ctx, game) => {
     for (let i = 0; i < allTiles.length; i++) {
         let currentTile = allTiles[i]
         if (currentTile.path && currentTile.special === '') {
-            ctx.fillStyle = 'silver'
+            ctx.imageSmoothingEnabled = false
+            ctx.drawImage(game.pathSprite, currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
+            // ctx.fillStyle = 'silver'
         } else if (currentTile.special === 'start') {
             ctx.fillStyle = 'lightgreen'
+            ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize )
         } else if (currentTile.special === 'exit') {
             ctx.fillStyle = 'coral'
+            ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize )
         } else {
             ctx.fillStyle = 'grey'
+            ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize )
         }
-        ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize )
 
         if (currentTile.selected) {
             ctx.strokeStyle = 'green'

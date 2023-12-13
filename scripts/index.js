@@ -31,6 +31,8 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!game) {
         game = startGame(tileSize, canvas.width, canvas.height, canvas)
         startButton.style.display = 'none'
+
+        game.pathSprite.src = '../sprites/path.png'
     }
 })
 
@@ -106,6 +108,8 @@ const startGame = (tileSize, width, height, canvas) => {
 
         playerHealth: 5,
         playerMoney: 20,
+
+        pathSprite: new Image(),
         
         isPaused: false,
         clickedTile: {},  

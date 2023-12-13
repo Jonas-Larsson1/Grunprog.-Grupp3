@@ -4,14 +4,14 @@ export const updateTowers = (game) => {
     game.towers.forEach(tower => {
         tower.attackCooldown -= game.deltaTime
         if (tower.attackCooldown <= 0) {
+            // TODO: Ändra så att tornen skjuter på närmsta fiende ist?
             spawnBullet(game, tower, game.enemies[0])
             tower.attackCooldown = 2
         }
-    });
+    })
 } 
 
 export const spawnTower = (clickedTile, game) => {
-    console.log(clickedTile)
     if (clickedTile) {
         if (clickedTile.special === '' && !clickedTile.path) {
             const tower = {
