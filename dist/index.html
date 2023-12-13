@@ -23,6 +23,8 @@
 
             aside {
                 border: 1px solid black;
+                padding: 1rem;
+                width: 100%;
             }
 
             canvas {
@@ -30,6 +32,14 @@
                 margin: 0.5rem;
             }
 
+            #towerSpawn {
+                display: none;
+            }
+
+            #towerRemove {
+                display: none;
+            }
+            
         </style>
     </head>
     <body>
@@ -41,10 +51,11 @@
         </main>
 
         <aside>
-            <button id="towerSpawn">Place tower here (cost: 20)</button>
-            <button id="towerRemove">Remove this tower</button>
             <div id="playerHealth">Health: <span id="healthValue"></span></div>
             <div id="playerMoney">Money: <span id="moneyValue"></span></div>
+            <div id="enemiesKilled">Enemies killed: <span id="enemyKillValue"></span></div>
+            <button id="towerSpawn">Place tower here (cost: 20)</button>
+            <button id="towerRemove">Remove this tower (refund: 10)</button>
         </aside>
 
         <script type="module" src="./index.js"></script>

@@ -43,5 +43,7 @@ export const removeTower = (clickedTile, game) => {
 
 
         clickedTile.special = ''
+
+        return true
     }
 }

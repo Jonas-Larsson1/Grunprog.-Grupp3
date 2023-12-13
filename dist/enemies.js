@@ -1,3 +1,5 @@
+import { addHitEffect } from "./effects.js"
+
 export const enemySpawnTimer = (game) => {
     game.enemySpawnTimer -= game.deltaTime
     if (game.enemySpawnTimer <= 0) {
@@ -12,6 +14,7 @@ export const updateEnemies = (game) => {
     game.enemies.forEach((enemy, index) => {
         game.bullets.forEach((bullet, bulletIndex) => {
             if (checkCollision(enemy, bullet)) {
+                addHitEffect(game, enemy.x, enemy.y, 'darkred', enemy.size)
                 game.bullets.splice(bulletIndex, 1)
                 game.enemies.splice(index, 1)
                 game.enemiesKilled++

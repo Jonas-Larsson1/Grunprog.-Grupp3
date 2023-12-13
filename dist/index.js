@@ -3,6 +3,7 @@ import { drawEnemies, enemySpawnTimer, updateEnemies } from './enemies.js'
 import { clickTile } from './selectTile.js'
 import { updateTowers, removeTower, spawnTower } from './towers.js'
 import { updateBullets } from './bullets.js'
+import { drawHitEffects } from './effects.js'
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -11,6 +12,7 @@ const towerSpawn = document.getElementById('towerSpawn')
 const towerRemove = document.getElementById('towerRemove')
 const playerHealthElement = document.getElementById('healthValue')
 const playerMoneyElement = document.getElementById('moneyValue')
+const enemiesKilledElement = document.getElementById('enemyKillValue')
 
 const tileSize = 64
 canvas.width = tileSize * 8
@@ -44,17 +46,30 @@ const startGame = (tileSize, width, height, canvas) => {
     })
 
     canvas.addEventListener('click', (event) => {
-        clickTile(event, game, canvas)
+        game.clickedTile = clickTile(event, game, canvas)
+        if (game.clickedTile && game.clickedTile.special === '') {
+            towerSpawn.style.display = 'block'
+            towerRemove.style.display = 'none'
+        } else if (game.clickedTile && game.clickedTile.special === 'tower') {
+            towerRemove.style.display = 'block'
+            towerSpawn.style.display = 'none'
+        } else {
+            towerSpawn.style.display = 'none'
+        }
     })
 
     towerSpawn.addEventListener('click', () => {
         if (game.playerMoney >= 20) {
             spawnTower(clickTile(null, game, null), game)
             game.playerMoney -= 20
+            towerSpawn.style.display = 'none'
         }
     })
+
     towerRemove.addEventListener('click', () => {
-        removeTower(clickTile(null, game, null), game)
+        if (removeTower(clickTile(null, game, null), game)) {
+            game.playerMoney += 10
+        }
     })
 
     window.addEventListener('blur', () => {
@@ -87,11 +102,13 @@ const startGame = (tileSize, width, height, canvas) => {
 
         towers: [],
         bullets: [],
+        hitEffects: [],
 
         playerHealth: 5,
-        playerMoney: 10,
+        playerMoney: 20,
         
-        isPaused: false, 
+        isPaused: false,
+        clickedTile: {},  
 
         lastTick: Date.now(),
         deltaTime: 0
@@ -109,6 +126,8 @@ const tick = (ctx, game) => {
             
             drawGameBoard(ctx, game)
             drawEnemies(ctx, game)
+            drawHitEffects(ctx, game)
+
             updateEnemies(game)
             updateTowers(game)
             updateBullets(game)
@@ -116,6 +135,7 @@ const tick = (ctx, game) => {
             
             playerHealthElement.textContent = game.playerHealth
             playerMoneyElement.textContent = game.playerMoney
+            enemiesKilledElement.textContent = game.enemiesKilled
         }
         
         requestAnimationFrame(() => {
