@@ -14,7 +14,7 @@ export const updateEnemies = (game) => {
     game.enemies.forEach((enemy, index) => {
         game.bullets.forEach((bullet, bulletIndex) => {
             if (checkCollision(enemy, bullet)) {
-                addHitEffect(game, enemy.x, enemy.y, 'darkred', enemy.size)
+                addHitEffect(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, '#62abd4', enemy.size / 2)
                 game.bullets.splice(bulletIndex, 1)
                 game.enemies.splice(index, 1)
                 game.enemiesKilled++

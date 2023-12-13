@@ -38,8 +38,8 @@ export const spawnBullet = (game, tower, enemy) => {
         const numBullets = 1; 
         const startX = tower.x + tower.size / 2;
         const startY = tower.y + tower.size / 2;
-        const targetX = enemy.x;
-        const targetY = enemy.y;
+        const targetX = enemy.x + enemy.size / 2;
+        const targetY = enemy.y + enemy.size / 2;
         // const deltaX = (targetX - startX) / numBullets; // ändrad position 
         // const deltaY = (targetY - startY) / numBullets;
         
