@@ -26,6 +26,12 @@ export const updateEnemies = (game) => {
             }
         })
 
+        enemy.animationTimer -= game.deltaTime
+
+        if (enemy.animationTimer < 0) {
+            enemy.animationTimer = 1
+        }
+
         const target = game.path[enemy.pathIndex]
 
         const speed = enemy.vel * game.deltaTime
@@ -50,10 +56,24 @@ export const updateEnemies = (game) => {
 }
 
 export const drawEnemies = (ctx, game) => {
-
     game.enemies.forEach(enemy => {
-        ctx.fillStyle = 'red'
-        ctx.fillRect(enemy.x, enemy.y, enemy.size, enemy.size)
+        let sprite = game.skull1Sprite
+
+        if (enemy.animationTimer >= 0.75) {
+            sprite = game.skull1Sprite
+
+        } else if (enemy.animationTimer >= 0.50) {
+            sprite = game.skull2Sprite
+
+        } else if (enemy.animationTimer >= 0.25) {
+            sprite = game.skull3Sprite
+
+        } else {
+            sprite = game.skull4Sprite
+        }
+
+        ctx.imageSmoothingEnabled = false
+        ctx.drawImage(sprite, enemy.x, enemy.y, enemy.size, enemy.size)
     })
 }
 
@@ -64,7 +84,8 @@ export const spawnEnemy = (game) => {
         size: game.tileSize / 2,
         vel: 50,
         pathIndex: 0,
-        health: 100
+        health: 100,
+        animationTimer: 1,
     }
 
     game.enemies.push(enemy)

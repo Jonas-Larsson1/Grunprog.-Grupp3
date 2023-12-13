@@ -41,6 +41,11 @@ window.addEventListener('DOMContentLoaded', () => {
         game.southEastSprite.src = './sprites/south-east.png'
         game.southWestSprite.src = './sprites/south-west.png'
         game.westEastSprite.src = './sprites/west-east.png'
+
+        game.skull1Sprite.src = './sprites/skull-1.png'
+        game.skull2Sprite.src = './sprites/skull-2.png'
+        game.skull3Sprite.src = './sprites/skull-3.png'
+        game.skull4Sprite.src = './sprites/skull-4.png'
     }
 })
 
@@ -126,6 +131,12 @@ const startGame = (tileSize, width, height, canvas) => {
         southEastSprite: new Image(),
         southWestSprite: new Image(),
         westEastSprite: new Image(),
+
+        skull1Sprite: new Image(),
+        skull2Sprite: new Image(),
+        skull3Sprite: new Image(),
+        skull4Sprite: new Image(),
+        
         
         isPaused: false,
         clickedTile: {},  

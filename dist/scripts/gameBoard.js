@@ -164,10 +164,9 @@ export const drawGameBoard = (ctx, game) => {
             sprite = game.exitSprite
         } 
 
-        
-        
-            ctx.imageSmoothingEnabled = false
-            ctx.drawImage(sprite, currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
+
+        ctx.imageSmoothingEnabled = false
+        ctx.drawImage(sprite, currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
        
 
         if (currentTile.selected) {
