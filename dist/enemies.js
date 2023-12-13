@@ -2,7 +2,7 @@ export const enemySpawnTimer = (game) => {
     game.enemySpawnTimer -= game.deltaTime
     if (game.enemySpawnTimer <= 0) {
         spawnEnemy(game)
-        game.enemySpawnTimer = Math.random() * 3 + 1
+        game.enemySpawnTimer = game.enemySpawnInterval
     }
 }
 
@@ -14,6 +14,11 @@ export const updateEnemies = (game) => {
             if (checkCollision(enemy, bullet)) {
                 game.bullets.splice(bulletIndex, 1)
                 game.enemies.splice(index, 1)
+                game.enemiesKilled++
+                if (game.enemiesKilled > 0 && game.enemiesKilled % 10 === 0) {
+                    game.enemySpawnInterval *= 0.8
+                }
+                game.playerMoney++
                 return
             }
         })
@@ -35,6 +40,7 @@ export const updateEnemies = (game) => {
                 enemy.pathIndex++
             } else {
                 game.enemies.splice(index, 1)
+                game.playerHealth--
             }
         }
     })

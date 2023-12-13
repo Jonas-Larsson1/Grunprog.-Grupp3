@@ -9,7 +9,8 @@ const ctx = canvas.getContext('2d')
 const startButton = document.getElementById('start')
 const towerSpawn = document.getElementById('towerSpawn')
 const towerRemove = document.getElementById('towerRemove')
-const playerHealthElement = document.getElementById('playerHealth')
+const playerHealthElement = document.getElementById('healthValue')
+const playerMoneyElement = document.getElementById('moneyValue')
 
 const tileSize = 64
 canvas.width = tileSize * 8
@@ -17,7 +18,14 @@ canvas.height = tileSize * 8
 
 let game;
 
-startButton.addEventListener('click', () => {
+// startButton.addEventListener('click', () => {
+//     if (!game) {
+//         game = startGame(tileSize, canvas.width, canvas.height, canvas)
+//         startButton.style.display = 'none'
+//     }
+// })
+
+window.addEventListener('DOMContentLoaded', () => {
     if (!game) {
         game = startGame(tileSize, canvas.width, canvas.height, canvas)
         startButton.style.display = 'none'
@@ -40,7 +48,10 @@ const startGame = (tileSize, width, height, canvas) => {
     })
 
     towerSpawn.addEventListener('click', () => {
-        spawnTower(clickTile(null, game, null), game)
+        if (game.playerMoney >= 20) {
+            spawnTower(clickTile(null, game, null), game)
+            game.playerMoney -= 20
+        }
     })
     towerRemove.addEventListener('click', () => {
         removeTower(clickTile(null, game, null), game)
@@ -71,11 +82,15 @@ const startGame = (tileSize, width, height, canvas) => {
 
         enemies: [],
         enemySpawnTimer: 2,
+        enemySpawnInterval: 2,
+        enemiesKilled: 0,
 
         towers: [],
         bullets: [],
 
-        playerHealth: 5, 
+        playerHealth: 5,
+        playerMoney: 10,
+        
         isPaused: false, 
 
         lastTick: Date.now(),
@@ -84,25 +99,37 @@ const startGame = (tileSize, width, height, canvas) => {
 }
 
 const tick = (ctx, game) => {
-    let currentTick = Date.now()
-    game.deltaTime = (currentTick - game.lastTick) / 1000
-    game.lastTick = currentTick
-    if (!game.isPaused) {
-        ctx.clearRect(0, 0, game.width, game.height)
-        
-        drawGameBoard(ctx, game)
-        drawEnemies(ctx, game)
-        updateEnemies(game)
-        updateTowers(game)
-        updateBullets(game)
-        enemySpawnTimer(game)
-    }
+    if (game.playerHealth > 0) {
 
-    requestAnimationFrame(() => {
-        tick(ctx, game)
-    })
+        let currentTick = Date.now()
+        game.deltaTime = (currentTick - game.lastTick) / 1000
+        game.lastTick = currentTick
+        if (!game.isPaused) {
+            ctx.clearRect(0, 0, game.width, game.height)
+            
+            drawGameBoard(ctx, game)
+            drawEnemies(ctx, game)
+            updateEnemies(game)
+            updateTowers(game)
+            updateBullets(game)
+            enemySpawnTimer(game)
+            
+            playerHealthElement.textContent = game.playerHealth
+            playerMoneyElement.textContent = game.playerMoney
+        }
+        
+        requestAnimationFrame(() => {
+            tick(ctx, game)
+        })
+
+    } else {
+        gameOver()
+    }
 }
 
+const gameOver = () => {
+    alert('You lost!')
+}
 
 // //  <<< Alternativ paus lösning >>>
 
