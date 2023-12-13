@@ -110,6 +110,7 @@ const calculateTileDirection = (allTiles, pathTiles, boardWidth) => {
         const currentTile = pathTiles[i]
         const tileToChange = allTiles[currentTile.y * boardWidth + currentTile.x]
 
+
         if (i > 0) {
         //   const previousTile = pathTiles[i - 1]
           tileToChange.direction += `${currentTile.position}`
@@ -131,37 +132,66 @@ export const drawGameBoard = (ctx, game) => {
         let currentTile = allTiles[i]
         let sprite = game.tileSprite
 
-        switch (currentTile.direction) {
-            case 'north-east':
-            case 'west-south':
-                sprite = game.southEastSprite
-                break
-            case 'north-west':
-            case 'east-south':
-                sprite = game.southWestSprite
-                break
-            case 'south-east':
-            case 'west-north':
-                sprite = game.northEastSprite
-                break
-            case 'south-west':
-            case 'east-north':
-                sprite = game.northWestSprite
-                break
-            case 'north-north':
-            case 'south-south':
-                sprite = game.northSouthSprite
-                break
-            case 'east-east':
-            case 'west-west':
-                sprite = game.westEastSprite
-                break
-        }
+        if (currentTile.path) {
+            switch (currentTile.direction) {
+                case 'north-east':
+                case 'west-south':
+                    sprite = game.southEastSprite
+                    break
+                case 'north-west':
+                case 'east-south':
+                    sprite = game.southWestSprite
+                    break
+                case 'south-east':
+                case 'west-north':
+                    sprite = game.northEastSprite
+                    break
+                case 'south-west':
+                case 'east-north':
+                    sprite = game.northWestSprite
+                    break
+                case 'north-north':
+                case 'south-south':
+                    sprite = game.northSouthSprite
+                    break
+                case 'east-east':
+                case 'west-west':
+                    sprite = game.westEastSprite
+                    break
+            }
+        } 
+
 
         if (currentTile.special === 'start') {
-            sprite = game.startSprite
+            switch (currentTile.direction) {
+                case '-north':
+                    sprite = game.startNorthSprite
+                    break
+                case '-east':
+                    sprite = game.startEastSprite
+                    break
+                case '-south':
+                    sprite = game.startSouthSprite
+                    break
+                case '-west':
+                    sprite = game.startWestSprite
+                    break
+            }
         } else if (currentTile.special === 'exit') {
-            sprite = game.exitSprite
+            switch (currentTile.direction) {
+                case 'south':
+                    sprite = game.exitNorthSprite
+                    break
+                case 'west':
+                    sprite = game.exitEastSprite
+                    break
+                case 'north':
+                    sprite = game.exitSouthSprite
+                    break
+                case 'east':
+                    sprite = game.exitWestSprite
+                    break
+            }
         } 
 
 

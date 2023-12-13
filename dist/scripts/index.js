@@ -33,8 +33,16 @@ window.addEventListener('DOMContentLoaded', () => {
         startButton.style.display = 'none'
 
         game.tileSprite.src = './sprites/tile.png'
-        game.startSprite.src = './sprites/start.png'
-        game.exitSprite.src = './sprites/exit.png'
+
+        game.startNorthSprite.src = './sprites/start-north.png'
+        game.startEastSprite.src = './sprites/start-east.png'
+        game.startSouthSprite.src = './sprites/start-south.png'
+        game.startWestSprite.src = './sprites/start-west.png'
+        game.exitNorthSprite.src = './sprites/exit-north.png'
+        game.exitEastSprite.src = './sprites/exit-east.png'
+        game.exitSouthSprite.src = './sprites/exit-south.png'
+        game.exitWestSprite.src = './sprites/exit-west.png'
+        
         game.northEastSprite.src = './sprites/north-east.png'
         game.northWestSprite.src = './sprites/north-west.png'
         game.northSouthSprite.src = './sprites/north-south.png'
@@ -123,8 +131,16 @@ const startGame = (tileSize, width, height, canvas) => {
         playerMoney: 20,
 
         tileSprite: new Image(),
-        startSprite: new Image(),
-        exitSprite: new Image(),
+
+        startNorthSprite: new Image(),
+        startEastSprite: new Image(),
+        startSouthSprite: new Image(),
+        startWestSprite: new Image(),
+        exitNorthSprite: new Image(),
+        exitEastSprite: new Image(),
+        exitSouthSprite: new Image(),
+        exitWestSprite: new Image(),
+
         northEastSprite: new Image(),
         northWestSprite: new Image(),
         northSouthSprite: new Image(),
