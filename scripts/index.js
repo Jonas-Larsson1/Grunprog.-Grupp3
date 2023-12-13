@@ -34,6 +34,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
         game.pathSprite.src = '../sprites/path.png'
 
+        game.startSprite.src = '../sprites/start.png'
+        game.exitSprite.src = '../sprites/exit.png'
         game.northEastSprite.src = '../sprites/north-east.png'
         game.northWestSprite.src = '../sprites/north-west.png'
         game.northSouthSprite.src = '../sprites/north-south.png'
@@ -117,6 +119,8 @@ const startGame = (tileSize, width, height, canvas) => {
         playerMoney: 20,
 
         pathSprite: new Image(),
+        startSprite: new Image(),
+        exitSprite: new Image(),
         northEastSprite: new Image(),
         northWestSprite: new Image(),
         northSouthSprite: new Image(),

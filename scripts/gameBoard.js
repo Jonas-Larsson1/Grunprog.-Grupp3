@@ -130,13 +130,14 @@ export const drawGameBoard = (ctx, game) => {
     for (let i = 0; i < allTiles.length; i++) {
         let currentTile = allTiles[i]
         let sprite = game.pathSprite
+
         switch (currentTile.direction) {
             case 'north-east':
             case 'west-south':
                 sprite = game.southEastSprite
                 break
             case 'north-west':
-            case 'west-south':
+            case 'east-south':
                 sprite = game.southWestSprite
                 break
             case 'south-east':
@@ -155,6 +156,12 @@ export const drawGameBoard = (ctx, game) => {
             case 'west-west':
                 sprite = game.westEastSprite
                 break
+        }
+
+        if (currentTile.special === 'start') {
+            sprite = game.startSprite
+        } else if (currentTile.special === 'exit') {
+            sprite = game.exitSprite
         }
 
         if (currentTile.special === 'start') {
