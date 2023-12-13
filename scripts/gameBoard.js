@@ -1,6 +1,6 @@
 
 export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
-    const allTiles = []
+    let allTiles = []
     const boardWidth = canvasWidth / tileSize
     const boardHeight = canvasHeight / tileSize
 
@@ -11,7 +11,8 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
                 y,
                 path: false,
                 selected: false,
-                special: ''
+                special: '',
+                direction: ''
             })
         }
     }
@@ -29,15 +30,16 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
     
     for (let n = 0; n < pathsTilesToGenerate; n++) {
         allTiles[currentTile.y * boardWidth + currentTile.x].path = true
+
         visitedTiles.push(currentTile)
         pathTiles.push(currentTile)
 
         const validAdjacentTiles = (tile) => {
             const allAdjacentTiles = ([
-                    { x: tile.x + 1, y: tile.y },
-                    { x: tile.x - 1, y: tile.y },
-                    { x: tile.x, y: tile.y + 1 },
-                    { x: tile.x, y: tile.y - 1 },
+                    { x: tile.x + 1, y: tile.y, position: 'east' },
+                    { x: tile.x - 1, y: tile.y, position: 'west' },
+                    { x: tile.x, y: tile.y + 1, position: 'south' },
+                    { x: tile.x, y: tile.y - 1, position: 'north' },
                 ])
 
             return allAdjacentTiles.filter(adjTile =>
@@ -85,6 +87,13 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
     startTile.special = 'start'
     exitTile.special = 'exit'
 
+    console.log(allTiles.filter(tile => tile.path === true));
+    console.log(pathTiles)
+
+    allTiles = calculateTileDirection(allTiles, pathTiles, boardWidth)
+
+    console.log(allTiles.filter(tile => tile.path === true))
+
     return {
         allTiles,
         startTile,
@@ -92,17 +101,63 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         pathTiles
     }
 }
- 
+
+const calculateTileDirection = (allTiles, pathTiles, boardWidth) => {
+    // const allTilesWithPath = allTiles.filter(tile => tile.path === true)
+    // console.log(allTilesWithPath)
+
+    for (let i = 0; i < pathTiles.length; i++) {
+        const currentTile = pathTiles[i]
+        const tileToChange = allTiles[currentTile.y * boardWidth + currentTile.x]
+
+        if (i > 0) {
+        //   const previousTile = pathTiles[i - 1]
+          tileToChange.direction += `${currentTile.position}`
+        }
+      
+        if (i < pathTiles.length - 1) {
+          const nextTile = pathTiles[i + 1]
+          tileToChange.direction += `-${nextTile.position}`
+        }
+    }
+
+    return allTiles
+}
+  
 export const drawGameBoard = (ctx, game) => {
     const tileSize = game.tileSize
     const allTiles = game.allTiles
     for (let i = 0; i < allTiles.length; i++) {
         let currentTile = allTiles[i]
-        if (currentTile.path && currentTile.special === '') {
-            ctx.imageSmoothingEnabled = false
-            ctx.drawImage(game.pathSprite, currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
-            // ctx.fillStyle = 'silver'
-        } else if (currentTile.special === 'start') {
+        let sprite = game.pathSprite
+        switch (currentTile.direction) {
+            case 'north-east':
+            case 'west-south':
+                sprite = game.southEastSprite
+                break
+            case 'north-west':
+            case 'west-south':
+                sprite = game.southWestSprite
+                break
+            case 'south-east':
+            case 'west-north':
+                sprite = game.northEastSprite
+                break
+            case 'south-west':
+            case 'east-north':
+                sprite = game.northWestSprite
+                break
+            case 'north-north':
+            case 'south-south':
+                sprite = game.northSouthSprite
+                break
+            case 'east-east':
+            case 'west-west':
+                sprite = game.westEastSprite
+                break
+        }
+
+        if (currentTile.special === 'start') {
             ctx.fillStyle = 'lightgreen'
             ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize )
         } else if (currentTile.special === 'exit') {
@@ -111,6 +166,11 @@ export const drawGameBoard = (ctx, game) => {
         } else {
             ctx.fillStyle = 'grey'
             ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize )
+        }
+
+        if (currentTile.path) {
+            ctx.imageSmoothingEnabled = false
+            ctx.drawImage(sprite, currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
         }
 
         if (currentTile.selected) {

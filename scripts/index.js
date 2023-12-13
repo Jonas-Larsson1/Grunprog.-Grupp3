@@ -33,6 +33,13 @@ window.addEventListener('DOMContentLoaded', () => {
         startButton.style.display = 'none'
 
         game.pathSprite.src = '../sprites/path.png'
+
+        game.northEastSprite.src = '../sprites/north-east.png'
+        game.northWestSprite.src = '../sprites/north-west.png'
+        game.northSouthSprite.src = '../sprites/north-south.png'
+        game.southEastSprite.src = '../sprites/south-east.png'
+        game.southWestSprite.src = '../sprites/south-west.png'
+        game.westEastSprite.src = '../sprites/west-east.png'
     }
 })
 
@@ -110,6 +117,12 @@ const startGame = (tileSize, width, height, canvas) => {
         playerMoney: 20,
 
         pathSprite: new Image(),
+        northEastSprite: new Image(),
+        northWestSprite: new Image(),
+        northSouthSprite: new Image(),
+        southEastSprite: new Image(),
+        southWestSprite: new Image(),
+        westEastSprite: new Image(),
         
         isPaused: false,
         clickedTile: {},  

@@ -25,6 +25,7 @@ export const clickTile = (event, game, canvas) => {
             newSelectedTile.selected = !newSelectedTile.selected
             return newSelectedTile
         } else {
+            console.log(newSelectedTile)
             return false
         }
     }
