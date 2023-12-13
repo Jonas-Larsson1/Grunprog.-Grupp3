@@ -18,7 +18,10 @@ canvas.height = tileSize * 8
 let game;
 
 startButton.addEventListener('click', () => {
-    game = startGame(tileSize, canvas.width, canvas.height, canvas)
+    if (!game) {
+        game = startGame(tileSize, canvas.width, canvas.height, canvas)
+        startButton.style.display = 'none'
+    }
 })
 
 const startGame = (tileSize, width, height, canvas) => {
