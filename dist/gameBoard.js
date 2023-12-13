@@ -104,12 +104,16 @@ export const drawGameBoard = (ctx, game) => {
             ctx.fillStyle = 'lightgreen'
         } else if (currentTile.special === 'exit') {
             ctx.fillStyle = 'coral'
-        } else if (currentTile.selected) {
-            ctx.fillStyle = 'red'
         } else {
             ctx.fillStyle = 'grey'
         }
-        ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
+        ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize )
+
+        if (currentTile.selected) {
+            ctx.strokeStyle = 'green'
+            ctx.lineWidth = 2
+            ctx.strokeRect(currentTile.x * game.tileSize, currentTile.y * game.tileSize, tileSize - 2, tileSize - 2)
+        }
     }
 
     game.towers.forEach((tower) => {
