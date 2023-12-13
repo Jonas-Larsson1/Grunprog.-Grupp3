@@ -32,16 +32,15 @@ window.addEventListener('DOMContentLoaded', () => {
         game = startGame(tileSize, canvas.width, canvas.height, canvas)
         startButton.style.display = 'none'
 
-        game.pathSprite.src = '../sprites/path.png'
-
-        game.startSprite.src = '../sprites/start.png'
-        game.exitSprite.src = '../sprites/exit.png'
-        game.northEastSprite.src = '../sprites/north-east.png'
-        game.northWestSprite.src = '../sprites/north-west.png'
-        game.northSouthSprite.src = '../sprites/north-south.png'
-        game.southEastSprite.src = '../sprites/south-east.png'
-        game.southWestSprite.src = '../sprites/south-west.png'
-        game.westEastSprite.src = '../sprites/west-east.png'
+        game.tileSprite.src = './sprites/tile.png'
+        game.startSprite.src = './sprites/start.png'
+        game.exitSprite.src = './sprites/exit.png'
+        game.northEastSprite.src = './sprites/north-east.png'
+        game.northWestSprite.src = './sprites/north-west.png'
+        game.northSouthSprite.src = './sprites/north-south.png'
+        game.southEastSprite.src = './sprites/south-east.png'
+        game.southWestSprite.src = './sprites/south-west.png'
+        game.westEastSprite.src = './sprites/west-east.png'
     }
 })
 
@@ -118,7 +117,7 @@ const startGame = (tileSize, width, height, canvas) => {
         playerHealth: 5,
         playerMoney: 20,
 
-        pathSprite: new Image(),
+        tileSprite: new Image(),
         startSprite: new Image(),
         exitSprite: new Image(),
         northEastSprite: new Image(),

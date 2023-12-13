@@ -129,7 +129,7 @@ export const drawGameBoard = (ctx, game) => {
     const allTiles = game.allTiles
     for (let i = 0; i < allTiles.length; i++) {
         let currentTile = allTiles[i]
-        let sprite = game.pathSprite
+        let sprite = game.tileSprite
 
         switch (currentTile.direction) {
             case 'north-east':
@@ -162,23 +162,13 @@ export const drawGameBoard = (ctx, game) => {
             sprite = game.startSprite
         } else if (currentTile.special === 'exit') {
             sprite = game.exitSprite
-        }
+        } 
 
-        if (currentTile.special === 'start') {
-            ctx.fillStyle = 'lightgreen'
-            ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize )
-        } else if (currentTile.special === 'exit') {
-            ctx.fillStyle = 'coral'
-            ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize )
-        } else {
-            ctx.fillStyle = 'grey'
-            ctx.fillRect(currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize )
-        }
-
-        if (currentTile.path) {
+        
+        
             ctx.imageSmoothingEnabled = false
             ctx.drawImage(sprite, currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
-        }
+       
 
         if (currentTile.selected) {
             ctx.strokeStyle = 'green'
