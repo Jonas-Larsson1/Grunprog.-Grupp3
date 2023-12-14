@@ -24,7 +24,7 @@ const findClosestEnemy = (tower, enemies) => {
         
         if (lowestHealth) {
             if (enemy.health < lowestHealth) {
-                distance *= 0.2
+                distance *= 0.5
             }
         }
         if (distance < shortestDistance) {

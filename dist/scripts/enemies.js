@@ -28,6 +28,7 @@ export const updateEnemies = (game) => {
             if (checkCollision(enemy, bullet)) {
                 game.bullets.splice(bulletIndex, 1)
                 enemy.health--
+                game.playerMoney++
                 if (enemy.health <= 0) {
                     addHitEffect(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, bullet.color, enemy.size / 2)
                     game.enemies.splice(index, 1)
