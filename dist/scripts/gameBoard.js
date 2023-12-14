@@ -125,6 +125,7 @@ const calculateTileDirection = (allTiles, pathTiles, boardWidth) => {
 export const drawGameBoard = (ctx, game) => {
     const tileSize = game.tileSize
     const allTiles = game.allTiles
+
     for (let i = 0; i < allTiles.length; i++) {
         let currentTile = allTiles[i]
         let sprite = game.tileSprite
@@ -204,8 +205,15 @@ export const drawGameBoard = (ctx, game) => {
     }
 
     game.towers.forEach((tower) => {
-        ctx.fillStyle = 'orange'; 
-        ctx.fillRect(tower.x, tower.y, tower.size, tower.size);
+        let sprite = game.towerSprite
+        if (tower.attackCooldown <= 0.1) {
+            sprite = game.towerFire1Sprite
+        } else if (tower.attackCooldown <= 0.05) {
+            sprite = game.towerFire2Sprite
+        }
+
+        ctx.imageSmoothingEnabled = false
+        ctx.drawImage(sprite, tower.x, tower.y, tower.size, tower.size);
     });
 
     game.bullets.forEach((bullet) => {

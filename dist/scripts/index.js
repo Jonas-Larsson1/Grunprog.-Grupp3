@@ -55,6 +55,10 @@ window.addEventListener('DOMContentLoaded', () => {
         game.skull2Sprite.src = './sprites/skull-2.png'
         game.skull3Sprite.src = './sprites/skull-3.png'
         game.skull4Sprite.src = './sprites/skull-4.png'
+
+        game.towerSprite.src = './sprites/tower.png'        
+        game.towerFire1Sprite.src = './sprites/tower-fire1.png'        
+        game.towerFire2Sprite.src = './sprites/tower-fire2.png'        
     }
 })
 
@@ -157,6 +161,10 @@ const startGame = (tileSize, width, height, canvas) => {
         skull2Sprite: new Image(),
         skull3Sprite: new Image(),
         skull4Sprite: new Image(),
+
+        towerSprite: new Image(),
+        towerFire1Sprite: new Image(),
+        towerFire2Sprite: new Image(),
         
         isPaused: false,
         clickedTile: {}, 
