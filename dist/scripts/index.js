@@ -16,8 +16,8 @@ const towerCostElement = document.getElementById('towerCostValue')
 const enemiesKilledElement = document.getElementById('enemyKillValue')
 
 const tileSize = 64
-canvas.width = tileSize * 8
-canvas.height = tileSize * 8   
+canvas.width = tileSize * 10
+canvas.height = tileSize * 10   
 
 let game;
 
@@ -34,11 +34,13 @@ window.addEventListener('DOMContentLoaded', () => {
         startButton.style.display = 'none'
 
         game.tileSprite.src = './sprites/tile.png'
+        game.borderSprite.src = './sprites/border.png'
 
         game.startNorthSprite.src = './sprites/start-north.png'
         game.startEastSprite.src = './sprites/start-east.png'
         game.startSouthSprite.src = './sprites/start-south.png'
         game.startWestSprite.src = './sprites/start-west.png'
+
         game.exitNorthSprite.src = './sprites/exit-north.png'
         game.exitEastSprite.src = './sprites/exit-east.png'
         game.exitSouthSprite.src = './sprites/exit-south.png'
@@ -75,6 +77,7 @@ const startGame = (tileSize, width, height, canvas) => {
 
     canvas.addEventListener('click', (event) => {
         game.clickedTile = clickTile(event, game, canvas)
+        console.log(game.clickedTile)
         if (game.clickedTile && game.clickedTile.special === '') {
             towerSpawn.style.display = 'block'
             towerRemove.style.display = 'none'
@@ -140,11 +143,13 @@ const startGame = (tileSize, width, height, canvas) => {
         playerMoney: 40,
 
         tileSprite: new Image(),
+        borderSprite: new Image(),
 
         startNorthSprite: new Image(),
         startEastSprite: new Image(),
         startSouthSprite: new Image(),
         startWestSprite: new Image(),
+
         exitNorthSprite: new Image(),
         exitEastSprite: new Image(),
         exitSouthSprite: new Image(),
@@ -180,8 +185,8 @@ const tick = (ctx, game) => {
         let currentTick = Date.now()
         game.deltaTime = (currentTick - game.lastTick) / 1000
         game.lastTick = currentTick
-        game.timer += game.deltaTime
         if (!game.isPaused) {
+            game.timer += game.deltaTime
             ctx.clearRect(0, 0, game.width, game.height)
             
             drawGameBoard(ctx, game)

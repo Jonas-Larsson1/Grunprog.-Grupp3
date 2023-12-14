@@ -6,20 +6,21 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
 
     for (let y = 0; y < boardHeight; y++) {
         for (let x = 0; x < boardWidth; x++) {
+            const isOnEdge = x === 0 || x === boardWidth - 1 || y === 0 || y === boardHeight - 1;
             allTiles.push({
                 x,
                 y,
                 path: false,
                 selected: false,
-                special: '',
+                special: isOnEdge ? 'border' : '',
                 direction: ''
             })
         }
     }
 
     let startTile = { 
-        x: Math.floor(Math.random() * boardWidth),
-        y: Math.floor(Math.random() * boardHeight),
+        x: Math.floor(Math.random() * (boardWidth - 2)) + 1,
+        y: Math.floor(Math.random() * (boardHeight - 2)) + 1,
     }
 
     const pathsTilesToGenerate = (boardHeight * boardWidth) / 2
@@ -43,10 +44,10 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
                 ])
 
             return allAdjacentTiles.filter(adjTile =>
-                    adjTile.x >= 0 &&
-                    adjTile.x < boardWidth &&
-                    adjTile.y >= 0 && 
-                    adjTile.y < boardHeight
+                    adjTile.x >= 2 &&
+                    adjTile.x < boardWidth - 2 &&
+                    adjTile.y >= 2 && 
+                    adjTile.y < boardHeight - 2
             )
         }
 
@@ -191,7 +192,10 @@ export const drawGameBoard = (ctx, game) => {
                     break
             }
         } 
-
+        
+        if (currentTile.special === 'border') {
+            sprite = game.borderSprite
+        }
 
         ctx.imageSmoothingEnabled = false
         ctx.drawImage(sprite, currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
