@@ -23,7 +23,7 @@ const enemiesKilledElement = document.getElementById('enemyKillValue')
 // const tilesInHeight = Math.floor(window.innerHeight / maxTileSize)
 const maxTileSize = 100
 const tilesInWidth = 14
-const tilesInHeight = 10
+const tilesInHeight = 8
 let tileSize = Math.floor(window.innerWidth / tilesInWidth)
 tileSize = Math.min(tileSize, maxTileSize)
 
