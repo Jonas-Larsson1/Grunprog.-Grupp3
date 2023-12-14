@@ -4,12 +4,37 @@ export const updateTowers = (game) => {
     game.towers.forEach(tower => {
         tower.attackCooldown -= game.deltaTime
         if (tower.attackCooldown <= 0) {
-            // TODO: Ändra så att tornen skjuter på närmsta fiende ist?
-            spawnBullet(game, tower, game.enemies[0])
-            tower.attackCooldown = 2
+            const closestEnemy = findClosestEnemy(tower, game.enemies)
+
+            if (closestEnemy) {
+                spawnBullet(game, tower, closestEnemy)
+                tower.attackCooldown = 2
+            }
         }
     })
 } 
+
+const findClosestEnemy = (tower, enemies) => {
+    let closestEnemy = null
+    let shortestDistance = Infinity
+
+    enemies.forEach(enemy => {
+        const distance = calculateDistance(tower, enemy)
+
+        if (distance < shortestDistance) {
+            shortestDistance = distance
+            closestEnemy = enemy
+        }
+    })
+
+    return closestEnemy
+}
+
+const calculateDistance = (point1, point2) => {
+    const dx = point1.x - point2.x
+    const dy = point1.y - point2.y
+    return Math.sqrt(dx * dx + dy * dy)
+}
 
 export const spawnTower = (clickedTile, game) => {
     if (clickedTile) {
