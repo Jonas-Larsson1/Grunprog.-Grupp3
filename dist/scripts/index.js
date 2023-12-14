@@ -7,31 +7,30 @@ import { drawHitEffects } from './effects.js'
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
-const startButton = document.getElementById('start')
+
 const towerSpawn = document.getElementById('towerSpawn')
 const towerRemove = document.getElementById('towerRemove')
+
 const playerHealthElement = document.getElementById('healthValue')
 const playerMoneyElement = document.getElementById('moneyValue')
 const towerCostElement = document.getElementById('towerCostValue')
 const enemiesKilledElement = document.getElementById('enemyKillValue')
 
-const tileSize = 64
-canvas.width = tileSize * 10
-canvas.height = tileSize * 10   
+// const maxTileSize = 100
+// const tilesInWidth = Math.floor(window.innerWidth / maxTileSize)
+// const tilesInHeight = Math.floor(window.innerHeight / maxTileSize)
+const tilesInWidth = 16
+const tilesInHeight = 10
+const tileSize = Math.floor(window.innerWidth / tilesInWidth)
+
+canvas.width = tilesInWidth * tileSize
+canvas.height = tilesInHeight * tileSize  
 
 let game;
-
-// startButton.addEventListener('click', () => {
-//     if (!game) {
-//         game = startGame(tileSize, canvas.width, canvas.height, canvas)
-//         startButton.style.display = 'none'
-//     }
-// })
 
 window.addEventListener('DOMContentLoaded', () => {
     if (!game) {
         game = startGame(tileSize, canvas.width, canvas.height, canvas)
-        startButton.style.display = 'none'
 
         game.tileSprite.src = './sprites/tile.png'
         game.borderSprite.src = './sprites/border.png'
@@ -93,7 +92,7 @@ const startGame = (tileSize, width, height, canvas) => {
         if (game.playerMoney >= game.towerCost) {
             spawnTower(clickTile(null, game, null), game)
             game.playerMoney -= game.towerCost
-            game.towerCost *= 1.5
+            game.towerCost *= 1.25
             game.towerCost = Math.floor(game.towerCost)
             towerSpawn.style.display = 'none'
         }
@@ -135,12 +134,12 @@ const startGame = (tileSize, width, height, canvas) => {
         enemiesKilled: 0,
 
         towers: [],
-        towerCost: 20,
+        towerCost: 10,
         bullets: [],
         hitEffects: [],
 
         playerHealth: 5,
-        playerMoney: 40,
+        playerMoney: 20,
 
         tileSprite: new Image(),
         borderSprite: new Image(),

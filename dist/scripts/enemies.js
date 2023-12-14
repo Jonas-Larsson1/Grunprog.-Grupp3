@@ -3,7 +3,7 @@ import { addHitEffect } from "./effects.js"
 export const enemySpawnTimer = (game) => {
     game.enemySpawnTimer -= game.deltaTime
     let enemyHealth = 1
-    if (game.timer > 30) {
+    if (game.timer > 30 && game.timer < 60) {
         enemyHealth = 2
     } else if (game.timer > 60) {
         enemyHealth = 3
@@ -18,7 +18,7 @@ export const updateEnemies = (game) => {
     game.enemyIntervalTimer -= game.deltaTime
     if (game.enemyIntervalTimer <= 0) {
         game.enemySpawnInterval *= 0.9
-        game.enemyIntervalTimer = 10
+        game.enemyIntervalTimer = 20
     }
 
     const margin = 1

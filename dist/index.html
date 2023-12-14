@@ -3,36 +3,61 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap">
         <title>TD</title>
         <style>
             * {
-                font-family: 'Courier New', Courier, monospace;
+                font-family: 'MedievalSharp', 'Courier New', Courier, monospace;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
 
             body {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: start;
+                background-color: #222;
+                color: #fff;
+                margin: 0;
             }
 
+            main {
+                position: relative;
+            }
 
             aside {
-                border: 1px solid black;
-                padding: 1rem;
-                width: 20rem;
-                margin: 0.5rem;
+                font-size: 1.5rem;
+                color: #ccc;
+                position: absolute;
+                display: flex;
+                justify-content: space-around;
+                width: 100%;
+                top: 1rem;
+                left: 0;
             }
 
-            canvas {
-                border: 1px solid black;
-                margin: 0.5rem;
+            #towerButtons {
+                color: #ccc;
+                position: absolute;
+                display: flex;
+                justify-content: space-around;
+                width: 100%;
+                bottom: 1rem;
+                left: 0;
             }
 
-            #towerSpawn {
-                display: none;
+            button {
+                padding: 0.5rem;
+                font-size: 1rem;
+                background-color: #333;
+                border: none;
+                color: #fff;
+                cursor: pointer;
             }
 
+            button:hover {
+                background-color: #555;
+            }
+
+            #towerSpawn,
             #towerRemove {
                 display: none;
             }
@@ -42,17 +67,16 @@
     <body>
         <main>
             <canvas id="canvas"></canvas>
-            <button id="start">Start</button>
+            <aside>
+                <div id="playerHealth">Health: <span id="healthValue"></span></div>
+                <div id="playerMoney">Money: <span id="moneyValue"></span></div>
+                <div id="enemiesKilled">Enemies killed: <span id="enemyKillValue"></span></div>
+            </aside>
+            <div id="towerButtons">
+                <button id="towerSpawn">Place tower here (cost: <span id="towerCostValue"></span>)</button>
+                <button id="towerRemove">Remove this tower (refund: 10)</button>
+            </div>
         </main>
-
-        <aside>
-            <div id="playerHealth">Health: <span id="healthValue"></span></div>
-            <div id="playerMoney">Money: <span id="moneyValue"></span></div>
-            <div id="enemiesKilled">Enemies killed: <span id="enemyKillValue"></span></div>
-            <button id="towerSpawn">Place tower here (cost: <span id="towerCostValue"></span>)</button>
-            <button id="towerRemove">Remove this tower (refund: 10)</button>
-        </aside>
-
         <script type="module" src="./scripts/index.js"></script>
     </body>
 </html>

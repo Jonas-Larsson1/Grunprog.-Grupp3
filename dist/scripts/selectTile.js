@@ -21,11 +21,10 @@ export const clickTile = (event, game, canvas) => {
         
         const newSelectedTile = game.allTiles[tileToChange]
 
-        if (!newSelectedTile.path) {
+        if (!newSelectedTile.path && newSelectedTile.special !== 'border') {
             newSelectedTile.selected = !newSelectedTile.selected
             return newSelectedTile
         } else {
-            console.log(newSelectedTile)
             return false
         }
     }
