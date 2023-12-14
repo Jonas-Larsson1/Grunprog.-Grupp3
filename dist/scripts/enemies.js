@@ -2,8 +2,14 @@ import { addHitEffect } from "./effects.js"
 
 export const enemySpawnTimer = (game) => {
     game.enemySpawnTimer -= game.deltaTime
+    let enemyHealth = 1
+    if (game.timer > 30) {
+        enemyHealth = 2
+    } else if (game.timer > 60) {
+        enemyHealth = 3
+    }
     if (game.enemySpawnTimer <= 0) {
-        spawnEnemy(game)
+        spawnEnemy(game, enemyHealth)
         game.enemySpawnTimer = game.enemySpawnInterval
     }
 }
@@ -20,10 +26,8 @@ export const updateEnemies = (game) => {
     game.enemies.forEach((enemy, index) => {
         game.bullets.forEach((bullet, bulletIndex) => {
             if (checkCollision(enemy, bullet)) {
-                console.log(enemy.health)
                 game.bullets.splice(bulletIndex, 1)
                 enemy.health--
-                console.log(enemy.health)
                 if (enemy.health <= 0) {
                     addHitEffect(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, '#62abd4', enemy.size / 2)
                     game.enemies.splice(index, 1)
@@ -80,10 +84,12 @@ export const drawEnemies = (ctx, game) => {
             sprite = game.skull4Sprite
         }
 
-        if (enemy.health < 2) {
-            ctx.filter = "drop-shadow(1px 1px 5px black) grayscale(100%)"
-        } else {
+        if (enemy.health > 2 ) {
+            ctx.filter = "drop-shadow(1px 1px 5px black) invert(100%)"
+        } else if (enemy.health > 1) {
             ctx.filter = "drop-shadow(1px 1px 5px black)"
+        } else {
+            ctx.filter = "drop-shadow(1px 1px 5px black) grayscale(100%)"
         }
         ctx.imageSmoothingEnabled = false
         ctx.drawImage(sprite, enemy.x, enemy.y, enemy.size, enemy.size)
@@ -91,17 +97,16 @@ export const drawEnemies = (ctx, game) => {
     })
 }
 
-export const spawnEnemy = (game) => {
+export const spawnEnemy = (game, enemyHealth) => {
     const enemy = {
         x: (game.startTile.x * game.tileSize) + (game.tileSize / 4),
         y: (game.startTile.y * game.tileSize) + (game.tileSize / 4),
         size: game.tileSize / 2,
         vel: 50,
         pathIndex: 0,
-        health: 2,
+        health: enemyHealth,
         animationTimer: 1,
     }
-
     game.enemies.push(enemy)
 }
 

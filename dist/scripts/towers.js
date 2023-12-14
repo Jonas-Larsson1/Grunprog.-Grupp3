@@ -17,13 +17,20 @@ export const updateTowers = (game) => {
 const findClosestEnemy = (tower, enemies) => {
     let closestEnemy = null
     let shortestDistance = Infinity
+    let lowestHealth
 
     enemies.forEach(enemy => {
-        const distance = calculateDistance(tower, enemy)
-
+        let distance = calculateDistance(tower, enemy)
+        
+        if (lowestHealth) {
+            if (enemy.health < lowestHealth) {
+                distance *= 0.2
+            }
+        }
         if (distance < shortestDistance) {
             shortestDistance = distance
             closestEnemy = enemy
+            lowestHealth = enemy.health
         }
     })
 

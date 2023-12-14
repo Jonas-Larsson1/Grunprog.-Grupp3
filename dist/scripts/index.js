@@ -128,12 +128,12 @@ const startGame = (tileSize, width, height, canvas) => {
         enemiesKilled: 0,
 
         towers: [],
-        towerCost: 10,
+        towerCost: 20,
         bullets: [],
         hitEffects: [],
 
         playerHealth: 5,
-        playerMoney: 30,
+        playerMoney: 40,
 
         tileSprite: new Image(),
 
@@ -172,6 +172,7 @@ const tick = (ctx, game) => {
         let currentTick = Date.now()
         game.deltaTime = (currentTick - game.lastTick) / 1000
         game.lastTick = currentTick
+        game.timer += game.deltaTime
         if (!game.isPaused) {
             ctx.clearRect(0, 0, game.width, game.height)
             
