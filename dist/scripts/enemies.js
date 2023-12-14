@@ -9,20 +9,28 @@ export const enemySpawnTimer = (game) => {
 }
 
 export const updateEnemies = (game) => {
+    game.enemyIntervalTimer -= game.deltaTime
+    if (game.enemyIntervalTimer <= 0) {
+        game.enemySpawnInterval *= 0.9
+        game.enemyIntervalTimer = 10
+    }
+
     const margin = 1
 
     game.enemies.forEach((enemy, index) => {
         game.bullets.forEach((bullet, bulletIndex) => {
             if (checkCollision(enemy, bullet)) {
-                addHitEffect(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, '#62abd4', enemy.size / 2)
+                console.log(enemy.health)
                 game.bullets.splice(bulletIndex, 1)
-                game.enemies.splice(index, 1)
-                game.enemiesKilled++
-                if (game.enemiesKilled > 0 && game.enemiesKilled % 10 === 0) {
-                    game.enemySpawnInterval *= 0.8
+                enemy.health--
+                console.log(enemy.health)
+                if (enemy.health <= 0) {
+                    addHitEffect(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, '#62abd4', enemy.size / 2)
+                    game.enemies.splice(index, 1)
+                    game.enemiesKilled++
+                    game.playerMoney++
+                    return
                 }
-                game.playerMoney++
-                return
             }
         })
 
@@ -72,8 +80,14 @@ export const drawEnemies = (ctx, game) => {
             sprite = game.skull4Sprite
         }
 
+        if (enemy.health < 2) {
+            ctx.filter = "drop-shadow(1px 1px 5px black) grayscale(100%)"
+        } else {
+            ctx.filter = "drop-shadow(1px 1px 5px black)"
+        }
         ctx.imageSmoothingEnabled = false
         ctx.drawImage(sprite, enemy.x, enemy.y, enemy.size, enemy.size)
+        ctx.filter = "none"
     })
 }
 
@@ -84,7 +98,7 @@ export const spawnEnemy = (game) => {
         size: game.tileSize / 2,
         vel: 50,
         pathIndex: 0,
-        health: 100,
+        health: 2,
         animationTimer: 1,
     }
 

@@ -12,6 +12,7 @@ const towerSpawn = document.getElementById('towerSpawn')
 const towerRemove = document.getElementById('towerRemove')
 const playerHealthElement = document.getElementById('healthValue')
 const playerMoneyElement = document.getElementById('moneyValue')
+const towerCostElement = document.getElementById('towerCostValue')
 const enemiesKilledElement = document.getElementById('enemyKillValue')
 
 const tileSize = 64
@@ -82,9 +83,11 @@ const startGame = (tileSize, width, height, canvas) => {
     })
 
     towerSpawn.addEventListener('click', () => {
-        if (game.playerMoney >= 20) {
+        if (game.playerMoney >= game.towerCost) {
             spawnTower(clickTile(null, game, null), game)
-            game.playerMoney -= 20
+            game.playerMoney -= game.towerCost
+            game.towerCost *= 1.5
+            game.towerCost = Math.floor(game.towerCost)
             towerSpawn.style.display = 'none'
         }
     })
@@ -121,14 +124,16 @@ const startGame = (tileSize, width, height, canvas) => {
         enemies: [],
         enemySpawnTimer: 2,
         enemySpawnInterval: 2,
+        enemyIntervalTimer: 10,
         enemiesKilled: 0,
 
         towers: [],
+        towerCost: 10,
         bullets: [],
         hitEffects: [],
 
         playerHealth: 5,
-        playerMoney: 20,
+        playerMoney: 30,
 
         tileSprite: new Image(),
 
@@ -153,9 +158,9 @@ const startGame = (tileSize, width, height, canvas) => {
         skull3Sprite: new Image(),
         skull4Sprite: new Image(),
         
-        
         isPaused: false,
-        clickedTile: {},  
+        clickedTile: {}, 
+        timer: 0, 
 
         lastTick: Date.now(),
         deltaTime: 0
@@ -164,7 +169,6 @@ const startGame = (tileSize, width, height, canvas) => {
 
 const tick = (ctx, game) => {
     if (game.playerHealth > 0) {
-
         let currentTick = Date.now()
         game.deltaTime = (currentTick - game.lastTick) / 1000
         game.lastTick = currentTick
@@ -182,6 +186,7 @@ const tick = (ctx, game) => {
             
             playerHealthElement.textContent = game.playerHealth
             playerMoneyElement.textContent = game.playerMoney
+            towerCostElement.textContent = game.towerCost
             enemiesKilledElement.textContent = game.enemiesKilled
         }
         

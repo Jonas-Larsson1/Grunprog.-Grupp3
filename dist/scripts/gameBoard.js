@@ -87,12 +87,9 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
     startTile.special = 'start'
     exitTile.special = 'exit'
 
-    console.log(allTiles.filter(tile => tile.path === true));
-    console.log(pathTiles)
-
     allTiles = calculateTileDirection(allTiles, pathTiles, boardWidth)
 
-    console.log(allTiles.filter(tile => tile.path === true))
+    // console.log(allTiles.filter(tile => tile.path === true))
 
     return {
         allTiles,
