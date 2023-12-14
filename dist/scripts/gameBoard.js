@@ -200,7 +200,6 @@ export const drawGameBoard = (ctx, game) => {
         ctx.imageSmoothingEnabled = false
         ctx.drawImage(sprite, currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
        
-
         if (currentTile.selected) {
             ctx.strokeStyle = 'green'
             ctx.lineWidth = 2

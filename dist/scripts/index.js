@@ -232,7 +232,7 @@ const startGame = (tileSize, width, height, canvas) => {
 }
 
 const tick = (ctx, game) => {
-    if (game.playerHealth > 0) {
+    if (game.playerHealth !== 'test') {
         let currentTick = Date.now()
         game.deltaTime = (currentTick - game.lastTick) / 1000
         game.lastTick = currentTick

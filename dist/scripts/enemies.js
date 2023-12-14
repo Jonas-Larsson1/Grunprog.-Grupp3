@@ -86,14 +86,14 @@ export const drawEnemies = (ctx, game) => {
         }
 
         if (enemy.health > 2 ) {
-            ctx.filter = "drop-shadow(1px 1px 5px black) invert(100%)"
+            ctx.filter = "drop-shadow(2px 2px black) invert(100%)"
         } else if (enemy.health > 1) {
-            ctx.filter = "drop-shadow(1px 1px 5px black)"
+            ctx.filter = "drop-shadow(2px 2px black)"
         } else {
-            ctx.filter = "drop-shadow(1px 1px 5px black) grayscale(100%)"
+            ctx.filter = "drop-shadow(2px 2px black) grayscale(100%)"
         }
         ctx.imageSmoothingEnabled = false
-        ctx.drawImage(sprite, enemy.x, enemy.y, enemy.size, enemy.size)
+        ctx.drawImage(sprite, Math.floor(enemy.x), Math.floor(enemy.y), enemy.size, enemy.size)
         ctx.filter = "none"
     })
 }
