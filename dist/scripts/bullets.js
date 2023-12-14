@@ -1,4 +1,4 @@
-export const createBullet = (startX, startY, targetX, targetY, speed) => {
+export const createBullet = (startX, startY, targetX, targetY, speed, attackRange, upgrade) => {
     const deltaX = targetX - startX;
     const deltaY = targetY - startY;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -6,16 +6,26 @@ export const createBullet = (startX, startY, targetX, targetY, speed) => {
     const speedX = (deltaX / distance) * speed;
     const speedY = (deltaY / distance) * speed;
 
+    let size = 6
+    let color = 'yellow'
+    if (upgrade === 2) {
+        size = 12
+    } else if (upgrade === 3) {
+        size = 12
+        color = '#62abd4'
+    }
+
     return {
         x: startX,
         y: startY,
-        size: 5,
+        size: size,
         targetX: targetX,
         targetY: targetY,
         speed: speed,
         speedX: speedX,
         speedY: speedY,
-        lifeTime: 1,
+        lifeTime: attackRange,
+        color: color,
     };
 };
 
@@ -45,7 +55,7 @@ export const spawnBullet = (game, tower, enemy) => {
         
         for (let i = 0; i < numBullets; i++) {
             // räkna ut position och skapa en ny kula 
-            const bullet = createBullet(startX, startY, targetX, targetY, 300); // för att skapa en rad 
+            const bullet = createBullet(startX, startY, targetX, targetY, tower.upgrade * 200, tower.attackRange, tower.upgrade); // för att skapa en rad 
             game.bullets.push(bullet);
         }
     }

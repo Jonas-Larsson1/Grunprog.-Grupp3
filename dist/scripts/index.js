@@ -61,9 +61,13 @@ window.addEventListener('DOMContentLoaded', () => {
         game.skull3Sprite.src = './sprites/skull-3.png'
         game.skull4Sprite.src = './sprites/skull-4.png'
 
-        game.towerSprite.src = './sprites/tower.png'        
-        game.towerFire1Sprite.src = './sprites/tower-fire1.png'        
-        game.towerFire2Sprite.src = './sprites/tower-fire2.png'        
+        game.tower1Sprite.src = './sprites/tower1.png'        
+        game.tower1Fire1Sprite.src = './sprites/tower1-fire1.png'        
+        game.tower1Fire2Sprite.src = './sprites/tower1-fire2.png'
+        
+        game.tower2Sprite.src = './sprites/tower2.png'        
+        game.tower2Fire1Sprite.src = './sprites/tower2-fire1.png'        
+        game.tower2Fire2Sprite.src = './sprites/tower2-fire2.png'   
     }
 })
 
@@ -178,7 +182,7 @@ const startGame = (tileSize, width, height, canvas) => {
 
         towers: [],
         towerCost: 10,
-        upgradeCost: 5,
+        upgradeCost: 10,
         bullets: [],
         hitEffects: [],
 
@@ -210,9 +214,13 @@ const startGame = (tileSize, width, height, canvas) => {
         skull3Sprite: new Image(),
         skull4Sprite: new Image(),
 
-        towerSprite: new Image(),
-        towerFire1Sprite: new Image(),
-        towerFire2Sprite: new Image(),
+        tower1Sprite: new Image(),
+        tower1Fire1Sprite: new Image(),
+        tower1Fire2Sprite: new Image(),
+
+        tower2Sprite: new Image(),
+        tower2Fire1Sprite: new Image(),
+        tower2Fire2Sprite: new Image(),
         
         isPaused: false,
         clickedTile: {}, 

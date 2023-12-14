@@ -209,19 +209,51 @@ export const drawGameBoard = (ctx, game) => {
     }
 
     game.towers.forEach((tower) => {
-        let sprite = game.towerSprite
-        if (tower.attackCooldown <= 0.1) {
-            sprite = game.towerFire1Sprite
-        } else if (tower.attackCooldown <= 0.05) {
-            sprite = game.towerFire2Sprite
+        let sprite 
+
+        switch (tower.upgrade) {
+            case 1:
+                sprite = game.tower1Sprite
+                if (tower.attackCooldown <= 0.1) {
+                    sprite = game.tower1Fire1Sprite
+                } else if (tower.attackCooldown <= 0.05) {
+                    sprite = game.tower1Fire2Sprite
+                }
+                break
+
+            case 2:
+                sprite = game.tower2Sprite
+                if (tower.attackCooldown <= 0.1) {
+                    sprite = game.tower2Fire1Sprite
+                } else if (tower.attackCooldown <= 0.05) {
+                    sprite = game.tower2Fire2Sprite
+                }
+                break
+
+            case 3:
+                ctx.filter = "invert(100%)"
+                sprite = game.tower2Sprite
+                if (tower.attackCooldown <= 0.1) {
+                    sprite = game.tower2Fire1Sprite
+                } else if (tower.attackCooldown <= 0.05) {
+                    sprite = game.tower2Fire2Sprite
+                }
+                break
+            
+            default:
+                sprite = game.tower1Sprite 
         }
+    
 
         ctx.imageSmoothingEnabled = false
-        ctx.drawImage(sprite, tower.x, tower.y, tower.size, tower.size);
-    });
+        ctx.drawImage(sprite, tower.x, tower.y, tower.size, tower.size)
+        ctx.filter = "none"
+    })
 
     game.bullets.forEach((bullet) => {
-        ctx.fillStyle = 'yellow';
-        ctx.fillRect(bullet.x, bullet.y, 5, 5);
+        ctx.fillStyle = bullet.color
+        ctx.beginPath();
+        ctx.arc(bullet.x, bullet.y, bullet.size / 2, 0, 2 * Math.PI);
+        ctx.fill();
     });
 }

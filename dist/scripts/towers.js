@@ -50,10 +50,10 @@ export const spawnTower = (clickedTile, game) => {
         xCord: clickedTile.x,
         yCord: clickedTile.y,
         size: game.tileSize / 2,
-        attackRange: 100,
+        attackRange: 1,
         attackCooldown: 1,
         lastAttackTime: 0,
-        upgrade: 0
+        upgrade: 1
     };
 
     game.towers.push(tower);
@@ -64,6 +64,8 @@ export const spawnTower = (clickedTile, game) => {
 export const upgradeTower = (tower, game) => {
     if (tower.upgrade < 3) {
         tower.upgrade++
+        tower.attackRange *= 2
+        tower.attackCooldown *= 0.5
     }
 }
 
