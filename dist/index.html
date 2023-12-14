@@ -14,13 +14,15 @@
             }
 
             body {
-                background-color: #222;
+                background-color: #000000;
                 color: #fff;
                 margin: 0;
             }
 
             main {
                 position: relative;
+                display: flex;
+                justify-content: center;
             }
 
             aside {
@@ -58,7 +60,8 @@
             }
 
             #towerSpawn,
-            #towerRemove {
+            #towerRemove,
+            #towerUpgrade {
                 display: none;
             }
             
@@ -73,8 +76,9 @@
                 <div id="enemiesKilled">Enemies killed: <span id="enemyKillValue"></span></div>
             </aside>
             <div id="towerButtons">
-                <button id="towerSpawn">Place tower here (cost: <span id="towerCostValue"></span>)</button>
-                <button id="towerRemove">Remove this tower (refund: 10)</button>
+                <button id="towerSpawn">Place tower (cost: <span id="towerCostValue"></span>)</button>
+                <button id="towerUpgrade">Upgrade tower (cost: <span id="towerUpgradeValue"></span>)</button>
+                <button id="towerRemove">Remove tower (refund: 10)</button>
             </div>
         </main>
         <script type="module" src="./scripts/index.js"></script>

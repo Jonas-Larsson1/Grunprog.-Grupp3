@@ -44,38 +44,40 @@ const calculateDistance = (point1, point2) => {
 }
 
 export const spawnTower = (clickedTile, game) => {
-    if (clickedTile) {
-        if (clickedTile.special === '' && !clickedTile.path) {
-            const tower = {
-                x: (clickedTile.x * game.tileSize) + (game.tileSize / 4),
-                y: (clickedTile.y * game.tileSize) + (game.tileSize / 4),
-                xCord: clickedTile.x,
-                yCord: clickedTile.y,
-                size: game.tileSize / 2,
-                attackRange: 100,
-                damage: 10,
-                attackCooldown: 1,
-                lastAttackTime: 0
-            };
-    
-            game.towers.push(tower);
+    const tower = {
+        x: (clickedTile.x * game.tileSize) + (game.tileSize / 4),
+        y: (clickedTile.y * game.tileSize) + (game.tileSize / 4),
+        xCord: clickedTile.x,
+        yCord: clickedTile.y,
+        size: game.tileSize / 2,
+        attackRange: 100,
+        attackCooldown: 1,
+        lastAttackTime: 0,
+        upgrade: 0
+    };
 
-            clickedTile.special = 'tower';
-        }
+    game.towers.push(tower);
+
+    clickedTile.special = 'tower';
+}
+
+export const upgradeTower = (tower, game) => {
+    if (tower.upgrade < 3) {
+        tower.upgrade++
     }
 }
 
 export const removeTower = (clickedTile, game) => {
-
     if (clickedTile && clickedTile.special === 'tower') {
-        
         game.towers = game.towers.filter(tower =>
             !(tower.xCord === clickedTile.x && tower.yCord === clickedTile.y)
         )
 
-
         clickedTile.special = ''
-
         return true
     }
 }
+
+export const getTowerAtTile = (tile, game) => {
+    return game.towers.find(tower => tower.xCord === tile.x && tower.yCord === tile.y)
+};

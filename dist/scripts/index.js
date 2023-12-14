@@ -1,7 +1,7 @@
 import { generateGameBoard, drawGameBoard } from './gameBoard.js'
 import { drawEnemies, enemySpawnTimer, updateEnemies } from './enemies.js'
 import { clickTile } from './selectTile.js'
-import { updateTowers, removeTower, spawnTower } from './towers.js'
+import { updateTowers, removeTower, spawnTower, upgradeTower, getTowerAtTile } from './towers.js'
 import { updateBullets } from './bullets.js'
 import { drawHitEffects } from './effects.js'
 
@@ -9,19 +9,23 @@ const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
 const towerSpawn = document.getElementById('towerSpawn')
+const towerUpgrade = document.getElementById('towerUpgrade')
 const towerRemove = document.getElementById('towerRemove')
 
 const playerHealthElement = document.getElementById('healthValue')
 const playerMoneyElement = document.getElementById('moneyValue')
 const towerCostElement = document.getElementById('towerCostValue')
+const towerUpgradeElement = document.getElementById('towerUpgradeValue')
 const enemiesKilledElement = document.getElementById('enemyKillValue')
 
 // const maxTileSize = 100
 // const tilesInWidth = Math.floor(window.innerWidth / maxTileSize)
 // const tilesInHeight = Math.floor(window.innerHeight / maxTileSize)
-const tilesInWidth = 16
+const maxTileSize = 100
+const tilesInWidth = 14
 const tilesInHeight = 10
-const tileSize = Math.floor(window.innerWidth / tilesInWidth)
+let tileSize = Math.floor(window.innerWidth / tilesInWidth)
+tileSize = Math.min(tileSize, maxTileSize)
 
 canvas.width = tilesInWidth * tileSize
 canvas.height = tilesInHeight * tileSize  
@@ -75,38 +79,77 @@ const startGame = (tileSize, width, height, canvas) => {
     })
 
     canvas.addEventListener('click', (event) => {
+        console.log(game.towers)
         game.clickedTile = clickTile(event, game, canvas)
-        console.log(game.clickedTile)
+
+        const tower = getTowerAtTile(game.clickedTile, game)
+
         if (game.clickedTile && game.clickedTile.special === '') {
             towerSpawn.style.display = 'block'
             towerRemove.style.display = 'none'
+            towerUpgrade.style.display = 'none'
         } else if (game.clickedTile && game.clickedTile.special === 'tower') {
             towerRemove.style.display = 'block'
             towerSpawn.style.display = 'none'
+            if (tower.upgrade < 3) {
+                towerUpgrade.style.display = 'block'
+            }
         } else {
             towerSpawn.style.display = 'none'
         }
     })
 
     towerSpawn.addEventListener('click', () => {
-        if (game.playerMoney >= game.towerCost) {
-            spawnTower(clickTile(null, game, null), game)
+        const clickedTile = clickTile(null, game, null)
+        const tower = getTowerAtTile(clickedTile, game)
+
+        if (!tower && game.playerMoney >= game.towerCost) {
+            spawnTower(clickedTile, game)
             game.playerMoney -= game.towerCost
             game.towerCost *= 1.25
             game.towerCost = Math.floor(game.towerCost)
             towerSpawn.style.display = 'none'
         }
+
+        if (game.playerMoney >= game.towerCost) {
+            
+        }
+    })
+
+    towerUpgrade.addEventListener('click', () => {
+        const clickedTile = clickTile(null, game, null)
+        const tower = getTowerAtTile(clickedTile, game)
+
+        if (tower && tower.upgrade < 3 && game.playerMoney >= game.upgradeCost) {
+            upgradeTower(tower, game)
+            game.playerMoney -= game.upgradeCost
+            game.upgradeCost *= 1.5
+            game.upgradeCost = Math.floor(game.upgradeCost)
+            towerRemove.style.display = 'none'
+            towerUpgrade.style.display = 'none'
+        }
+
     })
 
     towerRemove.addEventListener('click', () => {
         if (removeTower(clickTile(null, game, null), game)) {
             game.playerMoney += 10
+            towerRemove.style.display = 'none'
+            towerUpgrade.style.display = 'none'
         }
     })
 
     window.addEventListener('blur', () => {
         game.isPaused = true
-    }) 
+    })
+    
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            game.isPaused = true
+        } else {
+            game.isPaused = false
+        }
+    })
 
     window.addEventListener('focus', () => {
         game.isPaused = false
@@ -135,6 +178,7 @@ const startGame = (tileSize, width, height, canvas) => {
 
         towers: [],
         towerCost: 10,
+        upgradeCost: 5,
         bullets: [],
         hitEffects: [],
 
@@ -200,6 +244,7 @@ const tick = (ctx, game) => {
             playerHealthElement.textContent = game.playerHealth
             playerMoneyElement.textContent = game.playerMoney
             towerCostElement.textContent = game.towerCost
+            towerUpgradeElement.textContent = game.upgradeCost
             enemiesKilledElement.textContent = game.enemiesKilled
         }
         
