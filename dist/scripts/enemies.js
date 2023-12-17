@@ -1,4 +1,4 @@
-import { addHitEffect } from "./effects.js"
+import { addHitEffect, addMessage } from "./effects.js"
 
 export const enemySpawnTimer = (game) => {
     game.enemySpawnTimer -= game.deltaTime
@@ -29,6 +29,7 @@ export const updateEnemies = (game) => {
                 game.bullets.splice(bulletIndex, 1)
                 enemy.health--
                 game.playerMoney++
+                addMessage(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, 'yellow', '+', game.coin1Sprite)
                 if (enemy.health <= 0) {
                     addHitEffect(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, bullet.color, enemy.size / 2)
                     game.enemies.splice(index, 1)
@@ -63,6 +64,7 @@ export const updateEnemies = (game) => {
             } else {
                 game.enemies.splice(index, 1)
                 game.playerHealth -= enemy.health
+                addMessage(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, 'red', '-', game.flask1Sprite)
             }
         }
     })

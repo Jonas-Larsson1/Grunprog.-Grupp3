@@ -3,7 +3,7 @@ import { drawEnemies, enemySpawnTimer, updateEnemies } from './enemies.js'
 import { clickTile } from './selectTile.js'
 import { updateTowers, removeTower, spawnTower, upgradeTower, getTowerAtTile } from './towers.js'
 import { updateBullets } from './bullets.js'
-import { drawHitEffects } from './effects.js'
+import { drawHitEffects, drawMessages } from './effects.js'
 import { addScore, getHighestScore } from './scores.js'
 
 const canvas = document.getElementById('canvas')
@@ -108,6 +108,9 @@ const gameSetup = () => {
     game.tower2Sprite.src = './sprites/tower2.png'        
     game.tower2Fire1Sprite.src = './sprites/tower2-fire1.png'        
     game.tower2Fire2Sprite.src = './sprites/tower2-fire2.png'  
+
+    game.coin1Sprite.src = './sprites/coin-1.png'
+    game.flask1Sprite.src = './sprites/flask-1.png'
 }
 
 const startGame = () => {
@@ -255,6 +258,7 @@ const initializeGame = (tileSize, width, height, canvas) => {
         upgradeCost: 10,
         bullets: [],
         hitEffects: [],
+        messages: [],
 
         playerHealth: 15,
         playerMoney: 20,
@@ -291,6 +295,9 @@ const initializeGame = (tileSize, width, height, canvas) => {
         tower2Sprite: new Image(),
         tower2Fire1Sprite: new Image(),
         tower2Fire2Sprite: new Image(),
+
+        coin1Sprite : new Image(),
+        flask1Sprite : new Image(),
         
         isPaused: false,
         started: false,
@@ -327,6 +334,7 @@ const tick = (ctx, game) => {
             drawGameBoard(ctx, game)
             drawEnemies(ctx, game)
             drawHitEffects(ctx, game)
+            drawMessages(ctx, game)
 
             updateEnemies(game)
             updateTowers(game)
