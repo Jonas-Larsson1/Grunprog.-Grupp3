@@ -103,7 +103,7 @@ export const spawnEnemy = (game, enemyHealth) => {
         x: (game.startTile.x * game.tileSize) + (game.tileSize / 4),
         y: (game.startTile.y * game.tileSize) + (game.tileSize / 4),
         size: game.tileSize / 2,
-        vel: 50,
+        vel: game.tileSize,
         pathIndex: 0,
         health: enemyHealth,
         animationTimer: 1,
