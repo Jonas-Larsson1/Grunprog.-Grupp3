@@ -6,6 +6,8 @@ export const createBullet = (startX, startY, targetX, targetY, speed, attackRang
     const speedX = (deltaX / distance) * speed;
     const speedY = (deltaY / distance) * speed;
 
+    console.log(speed)
+
     let size = 6
     let color = 'yellow'
     if (upgrade === 2) {
@@ -55,7 +57,7 @@ export const spawnBullet = (game, tower, enemy) => {
         
         for (let i = 0; i < numBullets; i++) {
             // räkna ut position och skapa en ny kula 
-            const bullet = createBullet(startX, startY, targetX, targetY, tower.upgrade * 150, tower.attackRange, tower.upgrade); // för att skapa en rad 
+            const bullet = createBullet(startX, startY, targetX, targetY, (tower.upgrade * game.tileSize) * 3, tower.attackRange, tower.upgrade); // för att skapa en rad 
             game.bullets.push(bullet);
         }
     }

@@ -217,8 +217,6 @@ const initializeGame = (tileSize, width, height, canvas) => {
         estimatedDifficulty = 'Very Easy'
     }  
 
-    console.log(gameBoard.pathCoordinates)
-
     estimatedDifficultyElement.textContent = estimatedDifficulty
 
     return {
@@ -235,7 +233,7 @@ const initializeGame = (tileSize, width, height, canvas) => {
         enemies: [],
         enemySpawnTimer: 3,
         enemySpawnInterval: 3,
-        enemyIntervalTimer: 10,
+        enemyIntervalTimer: 5,
         enemiesKilled: 0,
 
         towers: [],
