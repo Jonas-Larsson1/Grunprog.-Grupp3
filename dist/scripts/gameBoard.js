@@ -221,19 +221,26 @@ export const drawGameBoard = (ctx, game) => {
         ctx.drawImage(sprite, currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
        
         if (currentTile.selected) {
-            let timerDecimal = game.timer % 1
-            if (timerDecimal <= 0.25) {
-                sprite = game.arrow1Sprite
-            } else if (timerDecimal <= 0.50) {
-                sprite = game.arrow2Sprite
-            } else if (timerDecimal <= 0.75) {
-                sprite = game.arrow3Sprite
-            } else  {
-                sprite = game.arrow4Sprite
-            }
+            if (currentTile.special === '') {
 
-            ctx.imageSmoothingEnabled = false
-            ctx.drawImage(sprite, (currentTile.x * game.tileSize) + (game.tileSize / 4), (currentTile.y * game.tileSize), tileSize / 2, tileSize / 2)
+                let timerDecimal = game.timer % 1
+                if (timerDecimal <= 0.25) {
+                    sprite = game.arrow1Sprite
+                } else if (timerDecimal <= 0.50) {
+                    sprite = game.arrow2Sprite
+                } else if (timerDecimal <= 0.75) {
+                    sprite = game.arrow3Sprite
+                } else  {
+                    sprite = game.arrow4Sprite
+                }
+                
+                ctx.imageSmoothingEnabled = false
+                ctx.drawImage(sprite, (currentTile.x * game.tileSize) + (game.tileSize / 4), (currentTile.y * game.tileSize) + (game.tileSize / 8), tileSize / 2, tileSize / 2)
+            }
+            ctx.strokeStyle = '#cae6f5'
+            ctx.lineWidth = 2
+            ctx.setLineDash([game.tileSize / 24, game.tileSize / 8])
+            ctx.strokeRect((currentTile.x * game.tileSize) + (game.tileSize / 6), (currentTile.y * game.tileSize) + (game.tileSize / 6), tileSize / 1.5, tileSize / 1.5)
         }
     }
 
