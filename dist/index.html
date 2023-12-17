@@ -96,9 +96,11 @@
                 background: rgba(0, 0, 0, 0.2); 
                 display: flex; 
                 flex-direction: column;
-                justify-content: space-evenly;
+                justify-content: space-between;
                 align-items: center;
                 z-index: 4;
+
+                padding: 1rem;
             }
 
             #startScreen div {
@@ -144,11 +146,11 @@
             </div>
             <div id="startScreen">
                 <h1>Welcome to Dungeon Defense!</h1>
+                <h2>Estimated difficulty: <span id="estimatedDifficultyValue"></span></h2>
                 <div>
                     <p>Do you want to generate a new dungeon or start with the current one?</p>
                     <button id="startWithCurrent">Start with current dungeon</button>
                     <button id="generateNew">Generate new dungeon</button>
-                    <h2>Estimated difficulty: <span id="estimatedDifficultyValue"></span></h2>
                 </div>
             </div>
             <div id="overlay">

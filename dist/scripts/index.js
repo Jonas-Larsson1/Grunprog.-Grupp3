@@ -21,6 +21,7 @@ const playerMoneyElement = document.getElementById('moneyValue')
 const enemiesKilledElement = document.getElementById('enemyKillValue')
 const towerCostElement = document.getElementById('towerCostValue')
 const towerUpgradeElement = document.getElementById('towerUpgradeValue')
+const estimatedDifficultyElement = document.getElementById('estimatedDifficultyValue')
 
 // const maxTileSize = 100
 // const tilesInWidth = Math.floor(window.innerWidth / maxTileSize)
@@ -58,47 +59,48 @@ window.addEventListener('DOMContentLoaded', () => {
         gameSetup()
     })
 
-    const gameSetup = () => {
-        game = initializeGame(tileSize, canvas.width, canvas.height, canvas)
-        
-        game.tileSprite.src = './sprites/tile.png'
-        game.borderSprite.src = './sprites/border.png'
-        
-        game.startNorthSprite.src = './sprites/start-north.png'
-        game.startEastSprite.src = './sprites/start-east.png'
-        game.startSouthSprite.src = './sprites/start-south.png'
-        game.startWestSprite.src = './sprites/start-west.png'
-        
-        game.exitNorthSprite.src = './sprites/exit-north.png'
-        game.exitEastSprite.src = './sprites/exit-east.png'
-        game.exitSouthSprite.src = './sprites/exit-south.png'
-        game.exitWestSprite.src = './sprites/exit-west.png'
-        
-        game.northEastSprite.src = './sprites/north-east.png'
-        game.northWestSprite.src = './sprites/north-west.png'
-        game.northSouthSprite.src = './sprites/north-south.png'
-        game.southEastSprite.src = './sprites/south-east.png'
-        game.southWestSprite.src = './sprites/south-west.png'
-        game.westEastSprite.src = './sprites/west-east.png'
-        
-        game.skull1Sprite.src = './sprites/skull-1.png'
-        game.skull2Sprite.src = './sprites/skull-2.png'
-        game.skull3Sprite.src = './sprites/skull-3.png'
-        game.skull4Sprite.src = './sprites/skull-4.png'
-        
-        game.tower1Sprite.src = './sprites/tower1.png'        
-        game.tower1Fire1Sprite.src = './sprites/tower1-fire1.png'        
-        game.tower1Fire2Sprite.src = './sprites/tower1-fire2.png'
-        
-        game.tower2Sprite.src = './sprites/tower2.png'        
-        game.tower2Fire1Sprite.src = './sprites/tower2-fire1.png'        
-        game.tower2Fire2Sprite.src = './sprites/tower2-fire2.png'  
-    }
-
     if (!game) {
         gameSetup()
     }
+
 })
+
+const gameSetup = () => {
+    game = initializeGame(tileSize, canvas.width, canvas.height, canvas)
+    
+    game.tileSprite.src = './sprites/tile.png'
+    game.borderSprite.src = './sprites/border.png'
+    
+    game.startNorthSprite.src = './sprites/start-north.png'
+    game.startEastSprite.src = './sprites/start-east.png'
+    game.startSouthSprite.src = './sprites/start-south.png'
+    game.startWestSprite.src = './sprites/start-west.png'
+    
+    game.exitNorthSprite.src = './sprites/exit-north.png'
+    game.exitEastSprite.src = './sprites/exit-east.png'
+    game.exitSouthSprite.src = './sprites/exit-south.png'
+    game.exitWestSprite.src = './sprites/exit-west.png'
+    
+    game.northEastSprite.src = './sprites/north-east.png'
+    game.northWestSprite.src = './sprites/north-west.png'
+    game.northSouthSprite.src = './sprites/north-south.png'
+    game.southEastSprite.src = './sprites/south-east.png'
+    game.southWestSprite.src = './sprites/south-west.png'
+    game.westEastSprite.src = './sprites/west-east.png'
+    
+    game.skull1Sprite.src = './sprites/skull-1.png'
+    game.skull2Sprite.src = './sprites/skull-2.png'
+    game.skull3Sprite.src = './sprites/skull-3.png'
+    game.skull4Sprite.src = './sprites/skull-4.png'
+    
+    game.tower1Sprite.src = './sprites/tower1.png'        
+    game.tower1Fire1Sprite.src = './sprites/tower1-fire1.png'        
+    game.tower1Fire2Sprite.src = './sprites/tower1-fire2.png'
+    
+    game.tower2Sprite.src = './sprites/tower2.png'        
+    game.tower2Fire1Sprite.src = './sprites/tower2-fire1.png'        
+    game.tower2Fire2Sprite.src = './sprites/tower2-fire2.png'  
+}
 
 const startGame = () => {
     game.started = true
@@ -197,6 +199,28 @@ const initializeGame = (tileSize, width, height, canvas) => {
         gameBoardTick(ctx, game)
     })
 
+    let estimatedDifficulty = 'unknown'
+    
+    let pathLength = gameBoard.pathCoordinates.length
+
+    if (pathLength <= 5) {
+        estimatedDifficulty = 'Hyper Extreme'
+    } else if (pathLength <= 10) {
+        estimatedDifficulty = 'Extreme'
+    } else if (pathLength <= 15) {
+        estimatedDifficulty = 'Very Hard'
+    } else if (pathLength <= 25) {
+        estimatedDifficulty = 'Medium'
+    } else if (pathLength <= 35) {
+        estimatedDifficulty = 'Easy'
+    } else if (pathLength > 35) {
+        estimatedDifficulty = 'Very Easy'
+    }  
+
+    console.log(gameBoard.pathCoordinates)
+
+    estimatedDifficultyElement.textContent = estimatedDifficulty
+
     return {
         tileSize,
         width,
@@ -266,7 +290,7 @@ const initializeGame = (tileSize, width, height, canvas) => {
     }
 }
 
-const gameBoardTick = (ctx, game, counter = 0, limit = 50) => {
+const gameBoardTick = (ctx, game, counter = 0, limit = 500) => {
     if (counter > limit) {
         return
     }
