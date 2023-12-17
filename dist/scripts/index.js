@@ -8,15 +8,19 @@ import { drawHitEffects } from './effects.js'
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
+const startScreen = document.getElementById('startScreen')
+const startWithCurrentButton = document.getElementById('startWithCurrent')
+const generateNewButton = document.getElementById('generateNew')
+
 const towerSpawn = document.getElementById('towerSpawn')
 const towerUpgrade = document.getElementById('towerUpgrade')
 const towerRemove = document.getElementById('towerRemove')
 
 const playerHealthElement = document.getElementById('healthValue')
 const playerMoneyElement = document.getElementById('moneyValue')
+const enemiesKilledElement = document.getElementById('enemyKillValue')
 const towerCostElement = document.getElementById('towerCostValue')
 const towerUpgradeElement = document.getElementById('towerUpgradeValue')
-const enemiesKilledElement = document.getElementById('enemyKillValue')
 
 // const maxTileSize = 100
 // const tilesInWidth = Math.floor(window.innerWidth / maxTileSize)
@@ -45,17 +49,24 @@ canvas.height = tilesInHeight * tileSize
 let game;
 
 window.addEventListener('DOMContentLoaded', () => {
-    if (!game) {
-        game = startGame(tileSize, canvas.width, canvas.height, canvas)
+    startWithCurrentButton.addEventListener('click', () => {
+        startGame()
+    })
 
+    generateNewButton.addEventListener('click', () => {
+    })
+
+    if (!game) {
+        game = initializeGame(tileSize, canvas.width, canvas.height, canvas)
+        
         game.tileSprite.src = './sprites/tile.png'
         game.borderSprite.src = './sprites/border.png'
-
+        
         game.startNorthSprite.src = './sprites/start-north.png'
         game.startEastSprite.src = './sprites/start-east.png'
         game.startSouthSprite.src = './sprites/start-south.png'
         game.startWestSprite.src = './sprites/start-west.png'
-
+        
         game.exitNorthSprite.src = './sprites/exit-north.png'
         game.exitEastSprite.src = './sprites/exit-east.png'
         game.exitSouthSprite.src = './sprites/exit-south.png'
@@ -67,32 +78,31 @@ window.addEventListener('DOMContentLoaded', () => {
         game.southEastSprite.src = './sprites/south-east.png'
         game.southWestSprite.src = './sprites/south-west.png'
         game.westEastSprite.src = './sprites/west-east.png'
-
+        
         game.skull1Sprite.src = './sprites/skull-1.png'
         game.skull2Sprite.src = './sprites/skull-2.png'
         game.skull3Sprite.src = './sprites/skull-3.png'
         game.skull4Sprite.src = './sprites/skull-4.png'
-
+        
         game.tower1Sprite.src = './sprites/tower1.png'        
         game.tower1Fire1Sprite.src = './sprites/tower1-fire1.png'        
         game.tower1Fire2Sprite.src = './sprites/tower1-fire2.png'
         
         game.tower2Sprite.src = './sprites/tower2.png'        
         game.tower2Fire1Sprite.src = './sprites/tower2-fire1.png'        
-        game.tower2Fire2Sprite.src = './sprites/tower2-fire2.png'   
+        game.tower2Fire2Sprite.src = './sprites/tower2-fire2.png'  
+        
     }
 })
 
-const startGame = (tileSize, width, height, canvas) => {
-    const gameBoard = generateGameBoard(tileSize, width, height)
-    const pathCoordinates = gameBoard.pathTiles.map(tile => ({
-        x: (tile.x * tileSize) + (tileSize / 4),
-        y: (tile.y * tileSize) + (tileSize / 4)
-    }))
+const startGame = () => {
+    game.started = true
+    canvas.style.zIndex = '0'
+    startScreen.style.display = 'none'
+}
 
-    const allTileCoordinates = gameBoard.allTiles.map(tile => {
-        return { x: tile.x * tileSize, y: tile.y * tileSize, path: tile.path, special: tile.special }
-    })
+const initializeGame = (tileSize, width, height, canvas) => {
+    const gameBoard = generateGameBoard(tileSize, width, height)
 
     canvas.addEventListener('click', (event) => {
         game.clickedTile = clickTile(event, game, canvas)
@@ -164,7 +174,6 @@ const startGame = (tileSize, width, height, canvas) => {
             game.isPaused = false
             document.body.classList.remove('paused')
         } else {
-            console.log('paused')
             game.isPaused = true
             document.body.classList.add('paused')
         }
@@ -187,8 +196,8 @@ const startGame = (tileSize, width, height, canvas) => {
         startTile: gameBoard.startTile,
         exitTile: gameBoard.exitTile,
 
-        path: pathCoordinates,
-        allTileCoordinates: allTileCoordinates, 
+        path: gameBoard.pathCoordinates,
+        allTileCoordinates: gameBoard.allTileCoordinates, 
 
         enemies: [],
         enemySpawnTimer: 3,
@@ -239,6 +248,7 @@ const startGame = (tileSize, width, height, canvas) => {
         tower2Fire2Sprite: new Image(),
         
         isPaused: false,
+        started: false, 
         clickedTile: {}, 
         timer: 0, 
 
@@ -248,11 +258,11 @@ const startGame = (tileSize, width, height, canvas) => {
 }
 
 const tick = (ctx, game) => {
-    if (game.playerHealth > 0) {
+    if (game.playerHealth > 0) { 
         let currentTick = Date.now()
         game.deltaTime = (currentTick - game.lastTick) / 1000
         game.lastTick = currentTick
-        if (!game.isPaused) {
+        if (!game.isPaused && game.started) {
             game.timer += game.deltaTime
             ctx.clearRect(0, 0, game.width, game.height)
             
@@ -273,6 +283,8 @@ const tick = (ctx, game) => {
 
             towerSpawn.disabled = game.playerMoney < game.towerCost
             towerUpgrade.disabled = game.playerMoney < game.upgradeCost
+        } else {
+            drawGameBoard(ctx, game)
         }
         
         requestAnimationFrame(() => {

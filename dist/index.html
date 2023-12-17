@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap">
-        <title>TD</title>
+        <title>Dungeon Defense</title>
         <style>
             * {
                 font-family: 'MedievalSharp', 'Courier New', Courier, monospace;
@@ -28,6 +28,10 @@
                 justify-content: center;
                 /* align-items: center; */
                 height: 100%;
+            }
+
+            canvas {
+                z-index: 1;
             }
 
             aside {
@@ -83,6 +87,28 @@
                 display: none;
             }
 
+            #startScreen {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.2); 
+                display: flex; 
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                z-index: 4;
+            }
+
+            #startScreen div {
+                text-align: center;
+            }
+
+            #startScreen button {
+                margin: 1rem;
+            }
+
             #overlay {
                 position: fixed;
                 top: 0;
@@ -93,6 +119,7 @@
                 display: none; 
                 justify-content: center;
                 align-items: center;
+                z-index: 5;
             }
 
             body.paused #overlay {
@@ -104,6 +131,7 @@
     <body>
         <main>
             <canvas id="canvas"></canvas>
+            
             <aside>
                 <div id="playerHealth">Health: <span id="healthValue"></span></div>
                 <div id="playerMoney">Money: <span id="moneyValue"></span></div>
@@ -113,6 +141,15 @@
                 <button id="towerSpawn">Place tower (cost: <span id="towerCostValue"></span>)</button>
                 <button id="towerUpgrade">Upgrade tower (cost: <span id="towerUpgradeValue"></span>)</button>
                 <button id="towerRemove">Remove tower (refund: 10)</button>
+            </div>
+            <div id="startScreen">
+                <h1>Welcome to Dungeon Defense!</h1>
+                <div>
+                    <p>Do you want to generate a new dungeon or start with the current one?</p>
+                    <button id="startWithCurrent">Start with current dungeon</button>
+                    <button id="generateNew">Generate new dungeon</button>
+                    <h2>Estimated difficulty: <span id="estimatedDifficultyValue"></span></h2>
+                </div>
             </div>
             <div id="overlay">
                 <h1>Paused</h1>

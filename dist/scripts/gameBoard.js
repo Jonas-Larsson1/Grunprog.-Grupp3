@@ -101,13 +101,22 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
 
     allTiles = calculateTileDirection(allTiles, pathTiles, boardWidth)
 
-    // console.log(allTiles.filter(tile => tile.path === true))
+    const pathCoordinates = pathTiles.map(tile => ({
+        x: (tile.x * tileSize) + (tileSize / 4),
+        y: (tile.y * tileSize) + (tileSize / 4)
+    }))
+
+    const allTileCoordinates = allTiles.map(tile => {
+        return { x: tile.x * tileSize, y: tile.y * tileSize, path: tile.path, special: tile.special }
+    })
 
     return {
         allTiles,
         startTile,
         exitTile,
-        pathTiles
+        pathTiles,
+        pathCoordinates,
+        allTileCoordinates
     }
 }
 
