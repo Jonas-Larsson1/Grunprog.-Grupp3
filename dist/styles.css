@@ -72,9 +72,8 @@ button[disabled] {
     cursor: not-allowed;
 }
 
-aside div {
-    display: flex;
-    align-items: center;
+aside div span {
+    /* somehow center text vertically without using flex */
 }
 
 aside div img {
