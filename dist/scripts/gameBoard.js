@@ -221,9 +221,19 @@ export const drawGameBoard = (ctx, game) => {
         ctx.drawImage(sprite, currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
        
         if (currentTile.selected) {
-            ctx.strokeStyle = 'green'
-            ctx.lineWidth = 2
-            ctx.strokeRect(currentTile.x * game.tileSize, currentTile.y * game.tileSize, tileSize - 2, tileSize - 2)
+            let timerDecimal = game.timer % 1
+            if (timerDecimal <= 0.25) {
+                sprite = game.arrow1Sprite
+            } else if (timerDecimal <= 0.50) {
+                sprite = game.arrow2Sprite
+            } else if (timerDecimal <= 0.75) {
+                sprite = game.arrow3Sprite
+            } else  {
+                sprite = game.arrow4Sprite
+            }
+
+            ctx.imageSmoothingEnabled = false
+            ctx.drawImage(sprite, (currentTile.x * game.tileSize) + (game.tileSize / 4), (currentTile.y * game.tileSize), tileSize / 2, tileSize / 2)
         }
     }
 

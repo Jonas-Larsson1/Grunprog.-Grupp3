@@ -111,6 +111,11 @@ const gameSetup = () => {
 
     game.coin1Sprite.src = './sprites/coin-1.png'
     game.flask1Sprite.src = './sprites/flask-1.png'
+
+    game.arrow1Sprite.src = './sprites/arrow-1.png'
+    game.arrow2Sprite.src = './sprites/arrow-2.png'
+    game.arrow3Sprite.src = './sprites/arrow-3.png'
+    game.arrow4Sprite.src = './sprites/arrow-4.png'
 }
 
 const startGame = () => {
@@ -298,6 +303,11 @@ const initializeGame = (tileSize, width, height, canvas) => {
 
         coin1Sprite : new Image(),
         flask1Sprite : new Image(),
+
+        arrow1Sprite : new Image(),
+        arrow2Sprite : new Image(),
+        arrow3Sprite : new Image(),
+        arrow4Sprite : new Image(),
         
         isPaused: false,
         started: false,
