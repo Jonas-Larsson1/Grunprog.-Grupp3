@@ -36,8 +36,8 @@ const windowWidth = window.innerWidth
 const windowHeight = window.innerHeight
 const windowSize = windowWidth * windowHeight
 const tileSize = Math.floor(Math.sqrt(windowSize / totalTiles))
-const tilesInWidth = Math.floor(windowWidth / tileSize)
-const tilesInHeight = Math.floor(windowHeight / tileSize)
+const tilesInWidth = Math.max(Math.floor(windowWidth / tileSize), 5)
+const tilesInHeight = Math.max(Math.floor(windowHeight / tileSize), 7)
 
 canvas.width = tilesInWidth * tileSize
 canvas.height = tilesInHeight * tileSize
