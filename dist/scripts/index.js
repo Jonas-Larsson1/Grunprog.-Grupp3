@@ -256,7 +256,7 @@ const initializeGame = (tileSize, width, height, canvas) => {
         bullets: [],
         hitEffects: [],
 
-        playerHealth: 1,
+        playerHealth: 15,
         playerMoney: 20,
 
         tileSprite: new Image(),

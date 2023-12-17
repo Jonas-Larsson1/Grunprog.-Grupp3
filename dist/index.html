@@ -4,172 +4,21 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap">
+        <link rel="stylesheet" href="./styles.css">
+        <link rel="icon" type="image/x-icon" href="./images/skull.gif">
         <title>Dungeon Defense</title>
-        <style>
-            * {
-                font-family: 'MedievalSharp', 'Courier New', Courier, monospace;
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-
-            html {
-                font-size: calc((2vw + 2vh) / 2);
-            }
-
-            body {
-                background-color: #000000;
-                color: #fff;
-                height: 100%;
-            }
-
-            main {
-                display: flex;
-                justify-content: center;
-                /* align-items: center; */
-                height: 100%;
-            }
-
-            canvas {
-                z-index: 1;
-            }
-
-            aside {
-                font-size: 1.5rem;
-                color: #ccc;
-                position: absolute;
-                display: flex;
-                justify-content: space-around;
-                width: 100%;
-                top: 1.5rem;
-                left: 0;
-            }
-
-            #towerButtons {
-                color: #ccc;
-                position: absolute;
-                display: flex;
-                justify-content: space-around;
-                width: 100%;
-                bottom: 4vh;
-                left: 0;
-            }
-
-            button {
-                padding: 0.5rem;
-                font-size: 1rem;
-                background-color: #333;
-                border: none;
-                color: #fff;
-                cursor: pointer;
-            }
-
-            button:hover:not[disabled] {
-                background-color: #555;
-            }
-
-            button[disabled] {
-                opacity: 50%;
-                cursor: not-allowed;
-            }
-            
-            #towerRemove {
-                background-color: #452525;
-            }
-
-            #towerUpgrade {
-                background-color: #254527;
-            }
-
-            #towerSpawn,
-            #towerRemove,
-            #towerUpgrade {
-                display: none;
-            }
-
-            #startScreen {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.2); 
-                display: flex; 
-                flex-direction: column;
-                justify-content: space-between;
-                align-items: center;
-                z-index: 4;
-
-                padding: 1rem;
-            }
-
-            #startScreen div {
-                text-align: center;
-            }
-
-            #startScreen button {
-                margin: 1rem;
-            }
-
-            #endScreen {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.7); 
-                display: none;
-
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                z-index: 4;
-
-                padding: 1rem;
-            }
-
-            #endScreen h2 {
-                margin: 2rem 0rem 0.5rem 0rem;
-            }
-
-            #endScreen h1 {
-                margin: 2rem;
-            }
-
-            #endScreen button {
-                margin: 2rem;
-            }
-
-            #overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.9); 
-                display: none; 
-                justify-content: center;
-                align-items: center;
-                z-index: 5;
-            }
-
-            body.paused #overlay {
-                display: flex;
-            }
-            
-        </style>
     </head>
     <body>
         <main>
             <canvas id="canvas"></canvas>
             
             <aside>
-                <div id="playerHealth">Health: <span id="healthValue"></span></div>
-                <div id="playerMoney">Money: <span id="moneyValue"></span></div>
-                <div id="enemiesKilled">Enemies killed: <span id="enemyKillValue"></span></div>
+                <div id="playerHealth"><img src="./images/flask.gif">&nbsp:&nbsp<span id="healthValue"></span></div>
+                <div id="playerMoney"><img src="./images/coin.gif">&nbsp:&nbsp<span id="moneyValue"></span></div>
+                <div id="enemiesKilled"><img src="./images/skull.gif">&nbsp:&nbsp<span id="enemyKillValue"></span></div>
             </aside>
             <div id="towerButtons">
-                <button id="towerSpawn">Place tower (cost: <span id="towerCostValue"></span>)</button>
+                <button id="towerSpawn">Place tower (Cost: <span id="towerCostValue"></span>)</button>
                 <button id="towerUpgrade">Upgrade tower (cost: <span id="towerUpgradeValue"></span>)</button>
                 <button id="towerRemove">Remove tower</button>
             </div>
