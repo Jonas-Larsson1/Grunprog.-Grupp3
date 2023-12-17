@@ -31,7 +31,7 @@ const enemiesKilledElement = document.getElementById('enemyKillValue')
 // canvas.width = tilesInWidth * tileSize
 // canvas.height = tilesInHeight * tileSize
 
-const totalTiles = 200
+const totalTiles = 150
 const windowWidth = window.innerWidth
 const windowHeight = window.innerHeight
 const windowSize = windowWidth * windowHeight

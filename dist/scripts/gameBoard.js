@@ -6,7 +6,11 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
 
     for (let y = 0; y < boardHeight; y++) {
         for (let x = 0; x < boardWidth; x++) {
-            const isOnEdge = x === 0 || x === boardWidth - 1 || y === 0 || y === boardHeight - 1;
+            // Edges all around
+            // const isOnEdge = x === 0 || x === boardWidth - 1 || y === 0 || y === boardHeight - 1;
+
+            // Edge only on top and bottom
+            const isOnEdge = y === 0 || y === boardHeight - 1;
             allTiles.push({
                 x,
                 y,
@@ -18,9 +22,16 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         }
     }
 
+    // Use this one if edges are all around
+    // let startTile = { 
+    //     x: Math.floor(Math.random() * (boardWidth - 2)) + 1,
+    //     y: Math.floor(Math.random() * (boardHeight - 2)) + 1,
+    // }
+
+    // Use this one of edges are only top and bottom
     let startTile = { 
-        x: Math.floor(Math.random() * (boardWidth - 2)) + 1,
-        y: Math.floor(Math.random() * (boardHeight - 2)) + 1,
+        x: Math.floor(Math.random() * (boardWidth - 1)) + 1,
+        y: Math.floor(Math.random() * ((boardHeight - 1) - 1)) + 1,
     }
 
     const pathsTilesToGenerate = (boardHeight * boardWidth) / 2
@@ -44,8 +55,8 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
                 ])
 
             return allAdjacentTiles.filter(adjTile =>
-                    adjTile.x >= 2 &&
-                    adjTile.x < boardWidth - 2 &&
+                    adjTile.x >= 1 &&
+                    adjTile.x < boardWidth - 1 &&
                     adjTile.y >= 2 && 
                     adjTile.y < boardHeight - 2
             )
