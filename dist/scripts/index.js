@@ -95,7 +95,6 @@ const startGame = (tileSize, width, height, canvas) => {
     })
 
     canvas.addEventListener('click', (event) => {
-        console.log(game.towers)
         game.clickedTile = clickTile(event, game, canvas)
 
         const tower = getTowerAtTile(game.clickedTile, game)
@@ -139,7 +138,7 @@ const startGame = (tileSize, width, height, canvas) => {
         if (tower && tower.upgrade < 3 && game.playerMoney >= game.upgradeCost) {
             upgradeTower(tower, game)
             game.playerMoney -= game.upgradeCost
-            game.upgradeCost *= 1.1
+            game.upgradeCost *= 1.2
             game.upgradeCost = Math.floor(game.upgradeCost)
             towerRemove.style.display = 'none'
             towerUpgrade.style.display = 'none'
@@ -157,18 +156,23 @@ const startGame = (tileSize, width, height, canvas) => {
 
     window.addEventListener('blur', () => {
         game.isPaused = true
+        document.body.classList.add('paused')
     })
     
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            game.isPaused = true
-        } else {
+        if (document.visibilityState === "visible") {
             game.isPaused = false
+            document.body.classList.remove('paused')
+        } else {
+            console.log('paused')
+            game.isPaused = true
+            document.body.classList.add('paused')
         }
     })
 
     window.addEventListener('focus', () => {
         game.isPaused = false
+        document.body.classList.remove('paused')
     }) 
 
     requestAnimationFrame(() => {
@@ -187,8 +191,8 @@ const startGame = (tileSize, width, height, canvas) => {
         allTileCoordinates: allTileCoordinates, 
 
         enemies: [],
-        enemySpawnTimer: 2,
-        enemySpawnInterval: 10,
+        enemySpawnTimer: 3,
+        enemySpawnInterval: 3,
         enemyIntervalTimer: 10,
         enemiesKilled: 0,
 
@@ -198,7 +202,7 @@ const startGame = (tileSize, width, height, canvas) => {
         bullets: [],
         hitEffects: [],
 
-        playerHealth: 5,
+        playerHealth: 15,
         playerMoney: 20,
 
         tileSprite: new Image(),

@@ -62,7 +62,7 @@ export const updateEnemies = (game) => {
                 enemy.pathIndex++
             } else {
                 game.enemies.splice(index, 1)
-                game.playerHealth--
+                game.playerHealth -= enemy.health
             }
         }
     })
