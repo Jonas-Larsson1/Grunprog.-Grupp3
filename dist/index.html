@@ -55,9 +55,14 @@
                 cursor: pointer;
             }
 
-            button:hover {
+            button:hover:not[disabled] {
                 background-color: #555;
             }
+
+            button[disabled] {
+                opacity: 50%;
+                cursor: not-allowed;
+            }   
 
             #towerSpawn,
             #towerRemove,

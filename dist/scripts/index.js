@@ -110,7 +110,7 @@ const startGame = (tileSize, width, height, canvas) => {
         if (!tower && game.playerMoney >= game.towerCost) {
             spawnTower(clickedTile, game)
             game.playerMoney -= game.towerCost
-            game.towerCost *= 1.25
+            game.towerCost *= 1.2
             game.towerCost = Math.floor(game.towerCost)
             towerSpawn.style.display = 'none'
         }
@@ -127,7 +127,7 @@ const startGame = (tileSize, width, height, canvas) => {
         if (tower && tower.upgrade < 3 && game.playerMoney >= game.upgradeCost) {
             upgradeTower(tower, game)
             game.playerMoney -= game.upgradeCost
-            game.upgradeCost *= 1.5
+            game.upgradeCost *= 1.1
             game.upgradeCost = Math.floor(game.upgradeCost)
             towerRemove.style.display = 'none'
             towerUpgrade.style.display = 'none'
@@ -176,7 +176,7 @@ const startGame = (tileSize, width, height, canvas) => {
 
         enemies: [],
         enemySpawnTimer: 2,
-        enemySpawnInterval: 2,
+        enemySpawnInterval: 10,
         enemyIntervalTimer: 10,
         enemiesKilled: 0,
 
@@ -254,6 +254,9 @@ const tick = (ctx, game) => {
             towerCostElement.textContent = game.towerCost
             towerUpgradeElement.textContent = game.upgradeCost
             enemiesKilledElement.textContent = game.enemiesKilled
+
+            towerSpawn.disabled = game.playerMoney < game.towerCost
+            towerUpgrade.disabled = game.playerMoney < game.upgradeCost
         }
         
         requestAnimationFrame(() => {

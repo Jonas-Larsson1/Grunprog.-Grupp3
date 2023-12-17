@@ -18,7 +18,7 @@ export const updateEnemies = (game) => {
     game.enemyIntervalTimer -= game.deltaTime
     if (game.enemyIntervalTimer <= 0) {
         game.enemySpawnInterval *= 0.9
-        game.enemyIntervalTimer = 20
+        game.enemyIntervalTimer = 30
     }
 
     const margin = 1
