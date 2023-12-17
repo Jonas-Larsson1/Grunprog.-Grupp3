@@ -21,14 +21,26 @@ const enemiesKilledElement = document.getElementById('enemyKillValue')
 // const maxTileSize = 100
 // const tilesInWidth = Math.floor(window.innerWidth / maxTileSize)
 // const tilesInHeight = Math.floor(window.innerHeight / maxTileSize)
-const maxTileSize = 100
-const tilesInWidth = 18
-const tilesInHeight = 8
-let tileSize = Math.floor(window.innerWidth / tilesInWidth)
-tileSize = Math.min(tileSize, maxTileSize)
+
+// const maxTileSize = 100
+// const tilesInWidth = 18
+// const tilesInHeight = 8
+// let tileSize = Math.floor(window.innerWidth / tilesInWidth)
+// tileSize = Math.min(tileSize, maxTileSize)
+
+// canvas.width = tilesInWidth * tileSize
+// canvas.height = tilesInHeight * tileSize
+
+const totalTiles = 200
+const windowWidth = window.innerWidth
+const windowHeight = window.innerHeight
+const windowSize = windowWidth * windowHeight
+const tileSize = Math.floor(Math.sqrt(windowSize / totalTiles))
+const tilesInWidth = Math.floor(windowWidth / tileSize)
+const tilesInHeight = Math.floor(windowHeight / tileSize)
 
 canvas.width = tilesInWidth * tileSize
-canvas.height = tilesInHeight * tileSize  
+canvas.height = tilesInHeight * tileSize
 
 let game;
 
@@ -232,7 +244,7 @@ const startGame = (tileSize, width, height, canvas) => {
 }
 
 const tick = (ctx, game) => {
-    if (game.playerHealth !== 'test') {
+    if (game.playerHealth > 0) {
         let currentTick = Date.now()
         game.deltaTime = (currentTick - game.lastTick) / 1000
         game.lastTick = currentTick
