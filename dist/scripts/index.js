@@ -4,6 +4,7 @@ import { clickTile } from './selectTile.js'
 import { updateTowers, removeTower, spawnTower, upgradeTower, getTowerAtTile } from './towers.js'
 import { updateBullets } from './bullets.js'
 import { drawHitEffects } from './effects.js'
+import { addScore, getHighestScore } from './scores.js'
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -15,6 +16,9 @@ const generateNewButton = document.getElementById('generateNew')
 const endScreen = document.getElementById('endScreen')
 const finalScoreElement = document.getElementById('finalScoreValue')
 const playAgainButton = document.getElementById('playAgain')
+const finalEnemiesKilledElement = document.getElementById('finalEnemiesKilledValue')
+const difficultyElement = document.getElementById('difficultyValue')
+const previousBestElement = document.getElementById('previousBestValue')
 
 const towerSpawn = document.getElementById('towerSpawn')
 const towerUpgrade = document.getElementById('towerUpgrade')
@@ -209,7 +213,7 @@ const initializeGame = (tileSize, width, height, canvas) => {
 
     if (pathLength <= 5) {
         estimatedDifficulty = 'Hyper Extreme'
-        difficulty = 2
+        difficulty = 2.0
     } else if (pathLength <= 10) {
         estimatedDifficulty = 'Extreme'
         difficulty = 1.5
@@ -218,7 +222,7 @@ const initializeGame = (tileSize, width, height, canvas) => {
         difficulty = 1.25
     } else if (pathLength <= 25) {
         estimatedDifficulty = 'Medium'
-        difficulty = 1
+        difficulty = 1.0
     } else if (pathLength <= 35) {
         estimatedDifficulty = 'Easy'
         difficulty = 0.75
@@ -252,7 +256,7 @@ const initializeGame = (tileSize, width, height, canvas) => {
         bullets: [],
         hitEffects: [],
 
-        playerHealth: 15,
+        playerHealth: 1,
         playerMoney: 20,
 
         tileSprite: new Image(),
@@ -349,10 +353,20 @@ const tick = (ctx, game) => {
 }
 
 const gameOver = () => {
+    let score = Math.floor(game.enemiesKilled * game.difficulty)
+    let previousBest = getHighestScore()
+
     endScreen.style.display = 'flex'
-    finalScoreElement.textContent = Math.floor(game.enemiesKilled * game.difficulty)
     canvas.style.zIndex = '1'
 
+    finalEnemiesKilledElement.textContent = game.enemiesKilled
+    difficultyElement.textContent = game.difficulty
+    finalScoreElement.textContent = score
+
+    previousBestElement.textContent = previousBest ? previousBest.playerScore : 'No previous score' 
+
+    addScore(game.difficulty, game.enemiesKilled, score)
+    
     playAgainButton.addEventListener('click', () => {
         endScreen.style.display = 'none'
         startScreen.style.display = 'flex'
