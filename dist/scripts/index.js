@@ -54,9 +54,11 @@ window.addEventListener('DOMContentLoaded', () => {
     })
 
     generateNewButton.addEventListener('click', () => {
+        game = null
+        gameSetup()
     })
 
-    if (!game) {
+    const gameSetup = () => {
         game = initializeGame(tileSize, canvas.width, canvas.height, canvas)
         
         game.tileSprite.src = './sprites/tile.png'
@@ -91,7 +93,10 @@ window.addEventListener('DOMContentLoaded', () => {
         game.tower2Sprite.src = './sprites/tower2.png'        
         game.tower2Fire1Sprite.src = './sprites/tower2-fire1.png'        
         game.tower2Fire2Sprite.src = './sprites/tower2-fire2.png'  
-        
+    }
+
+    if (!game) {
+        gameSetup()
     }
 })
 
@@ -99,6 +104,10 @@ const startGame = () => {
     game.started = true
     canvas.style.zIndex = '0'
     startScreen.style.display = 'none'
+
+    requestAnimationFrame(() => {
+        tick(ctx, game)
+    })
 }
 
 const initializeGame = (tileSize, width, height, canvas) => {
@@ -185,7 +194,7 @@ const initializeGame = (tileSize, width, height, canvas) => {
     }) 
 
     requestAnimationFrame(() => {
-        tick(ctx, game)
+        gameBoardTick(ctx, game)
     })
 
     return {
@@ -257,12 +266,24 @@ const initializeGame = (tileSize, width, height, canvas) => {
     }
 }
 
+const gameBoardTick = (ctx, game, counter = 0, limit = 50) => {
+    if (counter > limit) {
+        return
+    }
+
+    drawGameBoard(ctx, game)
+
+    requestAnimationFrame(() => {
+        gameBoardTick(ctx, game, counter + 1, limit)
+    })
+}
+
 const tick = (ctx, game) => {
     if (game.playerHealth > 0) { 
         let currentTick = Date.now()
         game.deltaTime = (currentTick - game.lastTick) / 1000
         game.lastTick = currentTick
-        if (!game.isPaused && game.started) {
+        if (!game.isPaused) {
             game.timer += game.deltaTime
             ctx.clearRect(0, 0, game.width, game.height)
             
@@ -283,8 +304,6 @@ const tick = (ctx, game) => {
 
             towerSpawn.disabled = game.playerMoney < game.towerCost
             towerUpgrade.disabled = game.playerMoney < game.upgradeCost
-        } else {
-            drawGameBoard(ctx, game)
         }
         
         requestAnimationFrame(() => {
