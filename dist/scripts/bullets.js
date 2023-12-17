@@ -6,8 +6,6 @@ export const createBullet = (startX, startY, targetX, targetY, speed, attackRang
     const speedX = (deltaX / distance) * speed;
     const speedY = (deltaY / distance) * speed;
 
-    console.log(speed)
-
     let size = 6
     let color = 'yellow'
     if (upgrade === 2) {

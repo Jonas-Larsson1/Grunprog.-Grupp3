@@ -12,6 +12,10 @@ const startScreen = document.getElementById('startScreen')
 const startWithCurrentButton = document.getElementById('startWithCurrent')
 const generateNewButton = document.getElementById('generateNew')
 
+const endScreen = document.getElementById('endScreen')
+const finalScoreElement = document.getElementById('finalScoreValue')
+const playAgainButton = document.getElementById('playAgain')
+
 const towerSpawn = document.getElementById('towerSpawn')
 const towerUpgrade = document.getElementById('towerUpgrade')
 const towerRemove = document.getElementById('towerRemove')
@@ -169,7 +173,7 @@ const initializeGame = (tileSize, width, height, canvas) => {
 
     towerRemove.addEventListener('click', () => {
         if (removeTower(clickTile(null, game, null), game)) {
-            game.playerMoney += 10
+            game.towerCost *= 0.8
             towerRemove.style.display = 'none'
             towerUpgrade.style.display = 'none'
         }
@@ -199,22 +203,28 @@ const initializeGame = (tileSize, width, height, canvas) => {
         gameBoardTick(ctx, game)
     })
 
-    let estimatedDifficulty = 'unknown'
+    let estimatedDifficulty, difficulty
     
     let pathLength = gameBoard.pathCoordinates.length
 
     if (pathLength <= 5) {
         estimatedDifficulty = 'Hyper Extreme'
+        difficulty = 2
     } else if (pathLength <= 10) {
         estimatedDifficulty = 'Extreme'
+        difficulty = 1.5
     } else if (pathLength <= 15) {
         estimatedDifficulty = 'Very Hard'
+        difficulty = 1.25
     } else if (pathLength <= 25) {
         estimatedDifficulty = 'Medium'
+        difficulty = 1
     } else if (pathLength <= 35) {
         estimatedDifficulty = 'Easy'
+        difficulty = 0.75
     } else if (pathLength > 35) {
         estimatedDifficulty = 'Very Easy'
+        difficulty = 0.5
     }  
 
     estimatedDifficultyElement.textContent = estimatedDifficulty
@@ -279,9 +289,10 @@ const initializeGame = (tileSize, width, height, canvas) => {
         tower2Fire2Sprite: new Image(),
         
         isPaused: false,
-        started: false, 
+        started: false,
         clickedTile: {}, 
         timer: 0, 
+        difficulty: difficulty,
 
         lastTick: Date.now(),
         deltaTime: 0
@@ -338,7 +349,15 @@ const tick = (ctx, game) => {
 }
 
 const gameOver = () => {
-    alert('You lost!')
+    endScreen.style.display = 'flex'
+    finalScoreElement.textContent = Math.floor(game.enemiesKilled * game.difficulty)
+    canvas.style.zIndex = '1'
+
+    playAgainButton.addEventListener('click', () => {
+        endScreen.style.display = 'none'
+        startScreen.style.display = 'flex'
+        gameSetup()
+    })
 }
 
 // //  <<< Alternativ paus lösning >>>

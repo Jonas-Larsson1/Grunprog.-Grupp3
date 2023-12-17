@@ -111,6 +111,27 @@
                 margin: 1rem;
             }
 
+            #endScreen {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5); 
+                display: none;
+
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 4;
+
+                padding: 1rem;
+            }
+
+            #endScreen h2 {
+                margin: 1rem;
+            }
+
             #overlay {
                 position: fixed;
                 top: 0;
@@ -142,16 +163,21 @@
             <div id="towerButtons">
                 <button id="towerSpawn">Place tower (cost: <span id="towerCostValue"></span>)</button>
                 <button id="towerUpgrade">Upgrade tower (cost: <span id="towerUpgradeValue"></span>)</button>
-                <button id="towerRemove">Remove tower (refund: 10)</button>
+                <button id="towerRemove">Remove tower</button>
             </div>
             <div id="startScreen">
-                <h1>Welcome to Dungeon Defense!</h1>
+                <h1>Welcome to Dungeon Defense</h1>
                 <h2>Estimated difficulty: <span id="estimatedDifficultyValue"></span></h2>
                 <div>
-                    <p>Do you want to generate a new dungeon or start with the current one?</p>
-                    <button id="startWithCurrent">Start with current dungeon</button>
+                    <p>Do you want to play this dungeon or generate a new one?</p>
+                    <button id="startWithCurrent">Start</button>
                     <button id="generateNew">Generate new dungeon</button>
                 </div>
+            </div>
+            <div id="endScreen">
+                <h1>Game over</h1>
+                <h2>Final score: <span id="finalScoreValue"></span></h2>
+                <button id="playAgain">Play again?</button>
             </div>
             <div id="overlay">
                 <h1>Paused</h1>
