@@ -9,16 +9,16 @@ export const clickTile = (event, game, canvas) => {
     })
 
     if (event && canvas) {
-        
+
         const rect = canvas.getBoundingClientRect()
         const x = event.clientX - rect.left
         const y = event.clientY - rect.top
-        
+
         const tileX = Math.floor(x / game.tileSize)
         const tileY = Math.floor(y / game.tileSize)
-        
+
         const tileToChange = game.allTiles.findIndex((tile) => tile.x === tileX && tile.y === tileY)
-        
+
         const newSelectedTile = game.allTiles[tileToChange]
 
         if (!newSelectedTile.path && newSelectedTile.special !== 'border') {
@@ -30,7 +30,4 @@ export const clickTile = (event, game, canvas) => {
     }
 
     return oldSelectedTile
- }
-    
-
-
+}
