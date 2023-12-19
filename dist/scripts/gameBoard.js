@@ -1,38 +1,28 @@
 export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
-    let allTiles = []
-    const boardWidth = canvasWidth / tileSize
-    const boardHeight = canvasHeight / tileSize
+    let validBoard = false 
+    
+    while (!validBoard) {
+        let allTiles = []
+        const boardWidth = canvasWidth / tileSize
+        const boardHeight = canvasHeight / tileSize
 
-    for (let y = 0; y < boardHeight; y++) {
-        for (let x = 0; x < boardWidth; x++) {
-            const isOnEdge = y === 0 || y === boardHeight - 1
-            allTiles.push({
-                x,
-                y,
-                path: false,
-                selected: false,
-                special: isOnEdge ? 'border' : '',
-                direction: ''
-            })
+        for (let y = 0; y < boardHeight; y++) {
+            for (let x = 0; x < boardWidth; x++) {
+                // Edges all around
+                // const isOnEdge = x === 0 || x === boardWidth - 1 || y === 0 || y === boardHeight - 1;
+
+                // Edge only on top and bottom
+                const isOnEdge = y === 0 || y === boardHeight - 1;
+                allTiles.push({
+                    x,
+                    y,
+                    path: false,
+                    selected: false,
+                    special: isOnEdge ? 'border' : '',
+                    direction: ''
+                })
+            }
         }
-    }
-
-    let startTile = {
-        x: Math.floor(Math.random() * (boardWidth - 1)) + 1,
-        y: Math.floor(Math.random() * ((boardHeight - 1) - 1)) + 1
-    }
-
-    const pathTilesToGenerate = (boardHeight * boardWidth) / 2
-
-    let currentTile = startTile
-    let visitedTiles = []
-    let pathTiles = []
-
-    for (let n = 0; n < pathTilesToGenerate; n++) {
-        allTiles[currentTile.y * boardWidth + currentTile.x].path = true
-
-        visitedTiles.push(currentTile)
-        pathTiles.push(currentTile)
 
         const validAdjacentTiles = (tile) => {
             const allAdjacentTiles = ([
@@ -77,34 +67,99 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         } else {
             const previousTile = pathTiles.pop()
             currentTile = previousTile
+
+        let startTile = { 
+            x: Math.floor(Math.random() * (boardWidth - 1)) + 1,
+            y: Math.floor(Math.random() * ((boardHeight - 1) - 1)) + 1,
         }
-    }
 
-    pathTiles.push(currentTile)
-    startTile = allTiles[startTile.y * boardWidth + startTile.x]
-    let exitTile = allTiles[currentTile.y * boardWidth + currentTile.x]
+        const pathsTilesToGenerate = (boardHeight * boardWidth) / 2
 
-    startTile.special = 'start'
-    exitTile.special = 'exit'
+        let currentTile = startTile
+        let visitedTiles = []
+        let pathTiles = []
+        
+        for (let n = 0; n < pathsTilesToGenerate; n++) {
+            allTiles[currentTile.y * boardWidth + currentTile.x].path = true
 
-    allTiles = calculateTileDirection(allTiles, pathTiles, boardWidth)
+            visitedTiles.push(currentTile)
+            pathTiles.push(currentTile)
 
-    const pathCoordinates = pathTiles.map(tile => ({
-        x: (tile.x * tileSize) + (tileSize / 4),
-        y: (tile.y * tileSize) + (tileSize / 4)
-    }))
+            const validAdjacentTiles = (tile) => {
+                const allAdjacentTiles = ([
+                        { x: tile.x + 1, y: tile.y, position: 'east' },
+                        { x: tile.x - 1, y: tile.y, position: 'west' },
+                        { x: tile.x, y: tile.y + 1, position: 'south' },
+                        { x: tile.x, y: tile.y - 1, position: 'north' },
+                    ])
 
-    const allTileCoordinates = allTiles.map(tile => {
-        return { x: tile.x * tileSize, y: tile.y * tileSize, path: tile.path, special: tile.special }
-    })
+                return allAdjacentTiles.filter(adjTile =>
+                        adjTile.x >= 1 &&
+                        adjTile.x < boardWidth - 1 &&
+                        adjTile.y >= 2 && 
+                        adjTile.y < boardHeight - 2
+                )
+            }
 
-    return {
-        allTiles,
-        startTile,
-        exitTile,
-        pathTiles,
-        pathCoordinates,
-        allTileCoordinates
+            const isValidTile = (tile) => {
+                const adjacentTiles = validAdjacentTiles(tile);
+                let adjPathCount = 0
+            
+                for (const adjTile of adjacentTiles) {
+                    if (allTiles[adjTile.y * boardWidth + adjTile.x].path) {
+                        adjPathCount++
+                    }
+                }
+            
+                return adjPathCount <= 1
+            };
+
+            const potentialTiles = validAdjacentTiles(currentTile).filter(adjTile => {
+                return (
+                    !visitedTiles.some((vt) => vt.x === adjTile.x && vt.y === adjTile.y) &&
+                    !allTiles[adjTile.y * boardWidth + adjTile.x].path &&
+                    isValidTile(adjTile)
+                ) 
+            })
+
+            if (potentialTiles.length > 0) {
+                const nextTile = potentialTiles[Math.floor(Math.random() * potentialTiles.length)] 
+                currentTile = nextTile
+            } else {
+                const previousTile = pathTiles.pop()
+                currentTile = previousTile
+            }
+        }
+
+        pathTiles.push(currentTile)
+        startTile = allTiles[startTile.y * boardWidth + startTile.x]
+        let exitTile = allTiles[currentTile.y * boardWidth + currentTile.x]
+
+        startTile.special = 'start'
+        exitTile.special = 'exit'
+
+        allTiles = calculateTileDirection(allTiles, pathTiles, boardWidth)
+
+        const pathCoordinates = pathTiles.map(tile => ({
+            x: (tile.x * tileSize) + (tileSize / 4),
+            y: (tile.y * tileSize) + (tileSize / 4)
+        }))
+
+        const allTileCoordinates = allTiles.map(tile => {
+            return { x: tile.x * tileSize, y: tile.y * tileSize, path: tile.path, special: tile.special }
+        })
+
+        if (pathTiles.length > 2) {
+            validBoard = true
+            return {
+                allTiles,
+                startTile,
+                exitTile,
+                pathTiles,
+                pathCoordinates,
+                allTileCoordinates
+            }
+        }
     }
 }
 
