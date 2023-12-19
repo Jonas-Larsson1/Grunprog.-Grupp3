@@ -24,50 +24,6 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
             }
         }
 
-        const validAdjacentTiles = (tile) => {
-            const allAdjacentTiles = ([
-                { x: tile.x + 1, y: tile.y, position: 'east' },
-                { x: tile.x - 1, y: tile.y, position: 'west' },
-                { x: tile.x, y: tile.y + 1, position: 'south' },
-                { x: tile.x, y: tile.y - 1, position: 'north' },
-            ])
-
-            return allAdjacentTiles.filter(adjTile =>
-                adjTile.x >= 1 &&
-                adjTile.x < boardWidth - 1 &&
-                adjTile.y >= 2 &&
-                adjTile.y < boardHeight - 2
-            )
-        }
-
-        const isValidTile = (tile) => {
-            const adjacentTiles = validAdjacentTiles(tile);
-            let adjPathCount = 0
-
-            for (const adjTile of adjacentTiles) {
-                if (allTiles[adjTile.y * boardWidth + adjTile.x].path) {
-                    adjPathCount++
-                }
-            }
-
-            return adjPathCount <= 1
-        };
-
-        const potentialTiles = validAdjacentTiles(currentTile).filter(adjTile => {
-            return (
-                !visitedTiles.some((vt) => vt.x === adjTile.x && vt.y === adjTile.y) &&
-                !allTiles[adjTile.y * boardWidth + adjTile.x].path &&
-                isValidTile(adjTile)
-            )
-        })
-
-        if (potentialTiles.length > 0) {
-            const nextTile = potentialTiles[Math.floor(Math.random() * potentialTiles.length)]
-            currentTile = nextTile
-        } else {
-            const previousTile = pathTiles.pop()
-            currentTile = previousTile
-
         let startTile = { 
             x: Math.floor(Math.random() * (boardWidth - 1)) + 1,
             y: Math.floor(Math.random() * ((boardHeight - 1) - 1)) + 1,
