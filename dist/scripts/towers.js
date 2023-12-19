@@ -1,4 +1,4 @@
-import { spawnBullet } from "./bullets.js";
+import { spawnBullet } from './bullets.js';
 
 export const updateTowers = (game) => {
     game.towers.forEach(tower => {
@@ -12,7 +12,7 @@ export const updateTowers = (game) => {
             }
         }
     })
-} 
+}
 
 const findClosestEnemy = (tower, enemies) => {
     let closestEnemy = null
@@ -21,7 +21,7 @@ const findClosestEnemy = (tower, enemies) => {
 
     enemies.forEach(enemy => {
         let distance = calculateDistance(tower, enemy)
-        
+
         if (lowestHealth) {
             if (enemy.health < lowestHealth) {
                 distance *= 0.5
@@ -54,11 +54,11 @@ export const spawnTower = (clickedTile, game) => {
         attackCooldown: 1,
         lastAttackTime: 0,
         upgrade: 1
-    };
+    }
 
-    game.towers.push(tower);
+    game.towers.push(tower)
 
-    clickedTile.special = 'tower';
+    clickedTile.special = 'tower'
 }
 
 export const upgradeTower = (tower, game) => {
@@ -82,4 +82,4 @@ export const removeTower = (clickedTile, game) => {
 
 export const getTowerAtTile = (tile, game) => {
     return game.towers.find(tower => tower.xCord === tile.x && tower.yCord === tile.y)
-};
+}

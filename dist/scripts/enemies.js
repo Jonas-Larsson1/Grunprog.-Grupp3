@@ -1,4 +1,4 @@
-import { addHitEffect, addMessage } from "./effects.js"
+import { addHitEffect, addMessage } from './effects.js'
 
 export const enemySpawnTimer = (game) => {
     game.enemySpawnTimer -= game.deltaTime
@@ -8,6 +8,7 @@ export const enemySpawnTimer = (game) => {
     } else if (game.timer > 60) {
         enemyHealth = 3
     }
+
     if (game.enemySpawnTimer <= 0) {
         spawnEnemy(game, enemyHealth)
         game.enemySpawnTimer = game.enemySpawnInterval
@@ -87,16 +88,16 @@ export const drawEnemies = (ctx, game) => {
             sprite = game.skull4Sprite
         }
 
-        if (enemy.health > 2 ) {
-            ctx.filter = "drop-shadow(2px 2px black) invert(100%)"
+        if (enemy.health > 2) {
+            ctx.filter = 'drop-shadow(2px 2px black) invert(100%)'
         } else if (enemy.health > 1) {
-            ctx.filter = "drop-shadow(2px 2px black)"
+            ctx.filter = 'drop-shadow(2px 2px black)'
         } else {
-            ctx.filter = "drop-shadow(2px 2px black) grayscale(100%)"
+            ctx.filter = 'drop-shadow(2px 2px black) grayscale(100%)'
         }
         ctx.imageSmoothingEnabled = false
         ctx.drawImage(sprite, Math.floor(enemy.x), Math.floor(enemy.y), enemy.size, enemy.size)
-        ctx.filter = "none"
+        ctx.filter = 'none'
     })
 }
 
@@ -108,7 +109,7 @@ export const spawnEnemy = (game, enemyHealth) => {
         vel: game.tileSize,
         pathIndex: 0,
         health: enemyHealth,
-        animationTimer: 1,
+        animationTimer: 1
     }
     game.enemies.push(enemy)
 }
@@ -119,7 +120,7 @@ const checkCollision = (rect1, rect2) => {
         rect1.x + rect1.size > rect2.x &&
         rect1.y < rect2.y + rect2.size &&
         rect1.y + rect1.size > rect2.y
-      ) {
+    ) {
         return true
     }
 }
