@@ -186,6 +186,7 @@ const initializeGame = (tileSize, width, height, canvas) => {
     towerRemove.addEventListener('click', () => {
         if (removeTower(clickTile(null, game, null), game)) {
             game.towerCost *= 0.8
+            game.towerCost = Math.floor(game.towerCost)
             towerRemove.style.display = 'none'
             towerUpgrade.style.display = 'none'
         }
