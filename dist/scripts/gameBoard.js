@@ -63,6 +63,7 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
             
                 for (const adjTile of adjacentTiles) {
                     if (allTiles[adjTile.y * boardWidth + adjTile.x].path) {
+                        // Om man tar bort ++ från raden nedanför så kan man få gångarna att ligga bredvid varandra
                         adjPathCount++
                     }
                 }
