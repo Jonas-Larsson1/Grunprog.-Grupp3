@@ -123,6 +123,8 @@ const startGame = () => {
     canvas.style.zIndex = '0'
     startScreen.style.display = 'none'
 
+    waveMessage("Wave 1")
+
     requestAnimationFrame(() => {
         tick(ctx, game)
     })
@@ -317,7 +319,8 @@ const initializeGame = (tileSize, width, height, canvas) => {
         difficulty: difficulty,
 
         lastTick: Date.now(),
-        deltaTime: 0
+        deltaTime: 0,
+
     }
 }
 
@@ -362,14 +365,44 @@ const tick = (ctx, game) => {
             towerUpgrade.disabled = game.playerMoney < game.upgradeCost
         }
         
+        waveMessageUpdated(game)
         requestAnimationFrame(() => {
             tick(ctx, game)
         })
-
     } else {
         gameOver()
     }
 }
+
+const waveMessage = (message) => {
+    var waveText = document.createElement("div");
+  
+    waveText.id = "wave-text";
+    waveText.innerHTML = message;
+
+    document.body.appendChild(waveText);
+
+    setTimeout(function () {
+        document.body.removeChild(waveText);
+    }, 1900); 
+}
+
+let wave2Displayed = false;
+let wave3Displayed = false;
+let infiniteWaveDisplayed = false;
+
+const waveMessageUpdated = () => {
+    if (!wave2Displayed && game.enemiesKilled >= 10) {
+        waveMessage("Wave 2");
+        wave2Displayed = true;
+    } else if (!wave3Displayed && game.enemiesKilled >= 20) {
+        waveMessage("Wave 3");
+        wave3Displayed = true;
+    } else if (!infiniteWaveDisplayed && game.enemiesKilled >= 40) {
+        waveMessage("Infinite wave");
+        infiniteWaveDisplayed = true;
+    }
+};
 
 const gameOver = () => {
     let score = Math.floor(game.enemiesKilled * game.difficulty)
