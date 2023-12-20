@@ -371,13 +371,6 @@ const tick = (ctx, game) => {
     } else {
         gameOver()
     }
-
-    requestAnimationFrame(() => {
-      tick(ctx, game)
-    })
-  } else {
-    gameOver()
-  }
 }
 
 const gameOver = () => {
