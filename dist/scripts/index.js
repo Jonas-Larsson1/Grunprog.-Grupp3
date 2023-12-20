@@ -5,6 +5,7 @@ import { updateTowers, removeTower, spawnTower, upgradeTower, getTowerAtTile } f
 import { updateBullets } from './bullets.js'
 import { drawHitEffects, drawMessages } from './effects.js'
 import { addScore, getHighestScore } from './scores.js'
+import { waveMessage, waveMessageUpdated } from './waves.js'
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -113,9 +114,11 @@ const startGame = () => {
   canvas.style.zIndex = '0'
   startScreen.style.display = 'none'
 
-  requestAnimationFrame(() => {
-    tick(ctx, game)
-  })
+    waveMessage("Wave 1")
+
+    requestAnimationFrame(() => {
+        tick(ctx, game)
+    })
 }
 
 const initializeGame = (tileSize, width, height, canvas) => {
@@ -332,40 +335,42 @@ const gameBoardTick = (ctx, game, counter = 0, limit = 500) => {
 }
 
 const tick = (ctx, game) => {
-  if (game.playerHealth > 0) {
-    let currentTick = Date.now()
-    game.deltaTime = (currentTick - game.lastTick) / 1000
-    game.lastTick = currentTick
-    if (!game.isPaused) {
-      game.timer += game.deltaTime
-      ctx.clearRect(0, 0, game.width, game.height)
+    if (game.playerHealth > 0) { 
+        let currentTick = Date.now()
+        game.deltaTime = (currentTick - game.lastTick) / 1000
+        game.lastTick = currentTick
+        if (!game.isPaused) {
+            game.timer += game.deltaTime
+            ctx.clearRect(0, 0, game.width, game.height)
+            
+            drawGameBoard(ctx, game)
+            drawEnemies(ctx, game)
+            drawHitEffects(ctx, game)
+            drawMessages(ctx, game)
 
-      drawGameBoard(ctx, game)
-      drawEnemies(ctx, game)
-      drawHitEffects(ctx, game)
-      drawMessages(ctx, game)
+            updateEnemies(game)
+            updateTowers(game)
+            updateBullets(game)
+            enemySpawnTimer(game)
+            
+            waveMessageUpdated(game)
 
-      updateEnemies(game)
-      updateTowers(game)
-      updateBullets(game)
-      enemySpawnTimer(game)
+            playerHealthElement.textContent = game.playerHealth
+            playerMoneyElement.textContent = game.playerMoney
+            towerCostElement.textContent = game.towerCost
+            towerUpgradeElement.textContent = game.upgradeCost
+            enemiesKilledElement.textContent = game.enemiesKilled
 
-      playerHealthElement.textContent = game.playerHealth
-      playerMoneyElement.textContent = game.playerMoney
-      towerCostElement.textContent = game.towerCost
-      towerUpgradeElement.textContent = game.upgradeCost
-      enemiesKilledElement.textContent = game.enemiesKilled
-
-      towerSpawn.disabled = game.playerMoney < game.towerCost
-      towerUpgrade.disabled = game.playerMoney < game.upgradeCost
+            towerSpawn.disabled = game.playerMoney < game.towerCost
+            towerUpgrade.disabled = game.playerMoney < game.upgradeCost
+        }
+        
+        requestAnimationFrame(() => {
+            tick(ctx, game)
+        })
+    } else {
+        gameOver()
     }
-
-    requestAnimationFrame(() => {
-      tick(ctx, game)
-    })
-  } else {
-    gameOver()
-  }
 }
 
 const gameOver = () => {
