@@ -1,48 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap">
-        <link rel="stylesheet" href="./styles.css">
-        <link rel="icon" type="image/x-icon" href="./images/skull.gif">
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap'>
+        <link rel='stylesheet' href='./styles.css'>
+        <link rel='icon' type='image/x-icon' href='./images/skull.gif'>
         <title>Dungeon Defense</title>
     </head>
     <body>
         <main>
-            <canvas id="canvas"></canvas>
+            <canvas id='canvas'></canvas>
             
             <aside>
-                <div id="playerHealth"><img src="./images/flask.gif">&nbsp:&nbsp<span id="healthValue"></span></div>
-                <div id="playerMoney"><img src="./images/coin.gif">&nbsp:&nbsp<span id="moneyValue"></span></div>
-                <div id="enemiesKilled"><img src="./images/skull.gif">&nbsp:&nbsp<span id="enemyKillValue"></span></div>
+                <div id='playerHealth'><img src='./images/flask.gif'>&nbsp:&nbsp<span id='healthValue'></span></div>
+                <div id='playerMoney'><img src='./images/coin.gif'>&nbsp:&nbsp<span id='moneyValue'></span></div>
+                <div id='enemiesKilled'><img src='./images/skull.gif'>&nbsp:&nbsp<span id='enemyKillValue'></span></div>
             </aside>
-            <div id="towerButtons">
-                <button id="towerSpawn">Place tower (Cost: <span id="towerCostValue"></span>)</button>
-                <button id="towerUpgrade">Upgrade tower (cost: <span id="towerUpgradeValue"></span>)</button>
-                <button id="towerRemove">Remove tower</button>
+            <div id='towerButtons'>
+                <button id='towerSpawn'>Place tower (Cost: <span id='towerCostValue'></span>)</button>
+                <button id='towerUpgrade'>Upgrade tower (cost: <span id='towerUpgradeValue'></span>)</button>
+                <button id='towerRemove'>Remove tower</button>
             </div>
-            <div id="startScreen">
+            <div id='startScreen'>
                 <h1>Welcome to Dungeon Defense</h1>
-                <h2>Estimated difficulty: <span id="estimatedDifficultyValue"></span></h2>
+                <h2>Estimated difficulty: <span id='estimatedDifficultyValue'></span></h2>
                 <div>
                     <p>Do you want to play this dungeon or generate a new one?</p>
-                    <button id="startWithCurrent">Start</button>
-                    <button id="generateNew">Generate new dungeon</button>
+                    <button id='startWithCurrent'>Start</button>
+                    <button id='generateNew'>Generate new dungeon</button>
                 </div>
             </div>
-            <div id="endScreen">
+            <div id='endScreen'>
                 <h1>Game over</h1>
-                    <p>Enemies killed: <span id="finalEnemiesKilledValue"></span></p>
-                    <p>Difficulty multiplier: <span id="difficultyValue"></span></p>
-                    <h2>Final score: <span id="finalScoreValue"></span></h2>
-                    <p>Previous best score: <span id="previousBestValue"></span></p>
-                <button id="playAgain">Play again?</button>
+                    <p>Enemies killed: <span id='finalEnemiesKilledValue'></span></p>
+                    <p>Difficulty multiplier: <span id='difficultyValue'></span></p>
+                    <h2>Final score: <span id='finalScoreValue'></span></h2>
+                    <p>Previous best score: <span id='previousBestValue'></span></p>
+                <button id='playAgain'>Play again?</button>
             </div>
-            <div id="overlay">
+            <div id='overlay'>
                 <h1>Paused</h1>
             </div>
         </main>
-        <script type="module" src="./scripts/index.js"></script>
+        <script type='module' src='./scripts/index.js'></script>
     </body>
 </html>
