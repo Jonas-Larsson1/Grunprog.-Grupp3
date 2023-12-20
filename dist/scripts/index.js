@@ -5,6 +5,7 @@ import { updateTowers, removeTower, spawnTower, upgradeTower, getTowerAtTile } f
 import { updateBullets } from './bullets.js'
 import { drawHitEffects, drawMessages } from './effects.js'
 import { addScore, getHighestScore } from './scores.js'
+import { waveMessage, waveMessageUpdated } from './waves.js'
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -355,6 +356,8 @@ const tick = (ctx, game) => {
             updateBullets(game)
             enemySpawnTimer(game)
             
+            waveMessageUpdated(game)
+
             playerHealthElement.textContent = game.playerHealth
             playerMoneyElement.textContent = game.playerMoney
             towerCostElement.textContent = game.towerCost
@@ -365,7 +368,6 @@ const tick = (ctx, game) => {
             towerUpgrade.disabled = game.playerMoney < game.upgradeCost
         }
         
-        waveMessageUpdated(game)
         requestAnimationFrame(() => {
             tick(ctx, game)
         })
@@ -373,36 +375,6 @@ const tick = (ctx, game) => {
         gameOver()
     }
 }
-
-const waveMessage = (message) => {
-    var waveText = document.createElement("div");
-  
-    waveText.id = "wave-text";
-    waveText.innerHTML = message;
-
-    document.body.appendChild(waveText);
-
-    setTimeout(function () {
-        document.body.removeChild(waveText);
-    }, 1900); 
-}
-
-let wave2Displayed = false;
-let wave3Displayed = false;
-let infiniteWaveDisplayed = false;
-
-const waveMessageUpdated = () => {
-    if (!wave2Displayed && game.enemiesKilled >= 10) {
-        waveMessage("Wave 2");
-        wave2Displayed = true;
-    } else if (!wave3Displayed && game.enemiesKilled >= 20) {
-        waveMessage("Wave 3");
-        wave3Displayed = true;
-    } else if (!infiniteWaveDisplayed && game.enemiesKilled >= 40) {
-        waveMessage("Infinite wave");
-        infiniteWaveDisplayed = true;
-    }
-};
 
 const gameOver = () => {
     let score = Math.floor(game.enemiesKilled * game.difficulty)
