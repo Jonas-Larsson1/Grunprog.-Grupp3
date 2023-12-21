@@ -83,13 +83,13 @@ let wave3Displayed = false;
 let infiniteWaveDisplayed = false;
 
 export const waveMessageUpdated = (game) => {
-    if (!wave2Displayed && game.enemiesKilled >= 10) {
+    if (!wave2Displayed && game.timer >= 30) {
         waveMessage("Wave 2");
         wave2Displayed = true;
-    } else if (!wave3Displayed && game.enemiesKilled >= 20) {
-        waveMessage("Wave 3");
-        wave3Displayed = true;
-    } else if (!infiniteWaveDisplayed && game.enemiesKilled >= 40) {
+    // } else if (!wave3Displayed && game.enemiesKilled >= 60) {
+    //     waveMessage("Wave 3");
+    //     wave3Displayed = true;
+    } else if (!infiniteWaveDisplayed && game.timer >= 60) {
         waveMessage("Infinite wave");
         infiniteWaveDisplayed = true;
     }
