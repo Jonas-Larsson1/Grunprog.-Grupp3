@@ -8,6 +8,8 @@ export const clickTile = (event, game, canvas) => {
         }
     })
 
+    // Om vi inte skickar in event och canvas får vi ut den tidigare valda tilen
+    // annars får vi ut den nya vi klickar på
     if (event && canvas) {
 
         const rect = canvas.getBoundingClientRect()
