@@ -1,17 +1,18 @@
 export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
+    // Vi säger att brädan ej är valid så att om t.ex. längden på path blir för kort 
+    // så generas en ny omedelbart
     let validBoard = false 
-    
     while (!validBoard) {
         let allTiles = []
+        // boardWidth och boardHeight blir våra högsta x,y kordinater längst ner till höger
         const boardWidth = canvasWidth / tileSize
         const boardHeight = canvasHeight / tileSize
-
         for (let y = 0; y < boardHeight; y++) {
             for (let x = 0; x < boardWidth; x++) {
-                // Edges all around
+                // Border tile runt hela brädan
                 // const isOnEdge = x === 0 || x === boardWidth - 1 || y === 0 || y === boardHeight - 1;
 
-                // Edge only on top and bottom
+                // Border tile endast nere och uppe
                 const isOnEdge = y === 0 || y === boardHeight - 1;
                 allTiles.push({
                     x,
@@ -24,11 +25,15 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
             }
         }
 
+        // Starten blir en random tile som är har en tile marginal från sidorna och
+        // 2 tiles in på höjden för att kompensera för våran border tile
         let startTile = { 
             x: Math.floor(Math.random() * (boardWidth - 1)) + 1,
             y: Math.floor(Math.random() * ((boardHeight - 1) - 1)) + 1,
         }
 
+        // Vi begränsar hur många steg algoritmen kommer ta för att skapa en path,
+        // Den slutgiltiga längden på path vet vi ej i förväg
         const pathsTilesToGenerate = (boardHeight * boardWidth) / 2
 
         let currentTile = startTile
@@ -36,6 +41,10 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
         let pathTiles = []
         
         for (let n = 0; n < pathsTilesToGenerate; n++) {
+            // Vi behandlar våran 1D array som ett 2D grid för att veta vilken
+            // Tile vi ska välja, I detta fall för att säga att tilen vi
+            // 'står' ska vara en path tile
+            // https://softwareengineering.stackexchange.com/questions/212808/treating-a-1d-data-structure-as-2d-grid
             allTiles[currentTile.y * boardWidth + currentTile.x].path = true
 
             visitedTiles.push(currentTile)
@@ -48,7 +57,8 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
                         { x: tile.x, y: tile.y + 1, position: 'south' },
                         { x: tile.x, y: tile.y - 1, position: 'north' },
                     ])
-
+                // Vi filtrerar alla intilligande tiles från dom som är innanför
+                // 1 tile från sidorna och 2 på höjden
                 return allAdjacentTiles.filter(adjTile =>
                         adjTile.x >= 1 &&
                         adjTile.x < boardWidth - 1 &&
@@ -57,10 +67,13 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
                 )
             }
 
+            // isValidTile() kollar om en tile ligger bredvid mer än 1 path tile
+            // Den gör så att vi alltid har minst en tom tile mellan två path tiles
+            // förutom på diagonalen
             const isValidTile = (tile) => {
                 const adjacentTiles = validAdjacentTiles(tile);
                 let adjPathCount = 0
-            
+                
                 for (const adjTile of adjacentTiles) {
                     if (allTiles[adjTile.y * boardWidth + adjTile.x].path) {
                         // Om man tar bort ++ från raden nedanför så kan man få gångarna att ligga bredvid varandra
@@ -71,6 +84,9 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
                 return adjPathCount <= 1
             };
 
+            // Alla potentiella tiles som vi kan gå till härnäst, 
+            // med ogiltilga tiles borttagna.
+            // En tile är giltig endast om isValidTile() är true och den inte redan har en path
             const potentialTiles = validAdjacentTiles(currentTile).filter(adjTile => {
                 return (
                     !visitedTiles.some((vt) => vt.x === adjTile.x && vt.y === adjTile.y) &&
@@ -79,6 +95,8 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
                 ) 
             })
 
+            // Om vi har minst en potentiel tile att gå vidare till så väljer vi en av dem slumpmässigt, 
+            // annars går vi tillbaka ett steg 
             if (potentialTiles.length > 0) {
                 const nextTile = potentialTiles[Math.floor(Math.random() * potentialTiles.length)] 
                 currentTile = nextTile
@@ -97,6 +115,8 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
 
         allTiles = calculateTileDirection(allTiles, pathTiles, boardWidth)
 
+        // vi räknar ut pixel kordinater till centrum av alla tiles,
+        // oanvänd i nuläget 
         const pathCoordinates = pathTiles.map(tile => ({
             x: (tile.x * tileSize) + (tileSize / 4),
             y: (tile.y * tileSize) + (tileSize / 4)
@@ -106,6 +126,8 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
             return { x: tile.x * tileSize, y: tile.y * tileSize, path: tile.path, special: tile.special }
         })
 
+        // Om längden på path är mer än 2 så returnernar vi den färdiga brädan
+        // annars fortsätter loopen och genererar en ny
         if (pathTiles.length > 2) {
             validBoard = true
             return {
@@ -121,21 +143,21 @@ export const generateGameBoard = (tileSize, canvasWidth, canvasHeight) => {
 }
 
 const calculateTileDirection = (allTiles, pathTiles, boardWidth) => {
-
     for (let i = 0; i < pathTiles.length; i++) {
         const currentTile = pathTiles[i]
         const tileToChange = allTiles[currentTile.y * boardWidth + currentTile.x]
 
+        // riktningen fiender går in i en tile
         if (i > 0) {
             tileToChange.direction += `${currentTile.position}`
         }
 
+        // riktningen fiender går ut ur en tile
         if (i < pathTiles.length - 1) {
             const nextTile = pathTiles[i + 1]
             tileToChange.direction += `-${nextTile.position}`
         }
     }
-
     return allTiles
 }
 
@@ -147,6 +169,8 @@ export const drawGameBoard = (ctx, game) => {
         let currentTile = allTiles[i]
         let sprite = game.sprites.tile
 
+        // Om våran tile har en path så vill vi kolla hur fiender går in och ut ur den
+        // för att välja vilken sprite vi ska använda
         if (currentTile.path) {
             switch (currentTile.direction) {
                 case 'north-east':
@@ -176,6 +200,8 @@ export const drawGameBoard = (ctx, game) => {
             }
         }
 
+        // start har endast utgång och ingen ingång
+        // exit har endast ingång och ingen utgång
         if (currentTile.special === 'start') {
             switch (currentTile.direction) {
                 case '-north':
@@ -212,12 +238,13 @@ export const drawGameBoard = (ctx, game) => {
             sprite = game.sprites.border
         }
 
+        // imageSmoothingEnabled måste stängas av för pixelart, annars blir det suddigt
         ctx.imageSmoothingEnabled = false
         ctx.drawImage(sprite, currentTile.x * tileSize, currentTile.y * tileSize, tileSize, tileSize)
 
+        // en animation som går mellan 4 olika sprites varje sekund
         if (currentTile.selected) {
             if (currentTile.special === '') {
-
                 let timerDecimal = game.timer % 1
                 if (timerDecimal <= 0.25) {
                     sprite = game.sprites.arrow1
@@ -242,6 +269,7 @@ export const drawGameBoard = (ctx, game) => {
     game.towers.forEach((tower) => {
         let sprite
 
+        // olika grafik beroende på tower upgraderingsnivå och om den ska precis attackera
         switch (tower.upgrade) {
             case 1:
                 sprite = game.sprites.tower1
