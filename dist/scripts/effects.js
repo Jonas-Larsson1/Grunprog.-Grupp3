@@ -13,7 +13,7 @@ export const drawMessages = (ctx, game) => {
         ctx.fillText(message.message, message.x, message.y)
 
         if (message.sprite) {
-            ctx.drawImage(message.sprite, message.x + game.tileSize / 7, message.y - game.tileSize / 5, game.tileSize / 4, game.tileSize / 4)
+            ctx.drawImage(message.sprite, message.x + game.tileSize / 3, message.y - game.tileSize / 5, game.tileSize / 4, game.tileSize / 4)
         }
 
         message.y -= (game.deltaTime * 15)

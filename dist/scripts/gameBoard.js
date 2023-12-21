@@ -145,33 +145,33 @@ export const drawGameBoard = (ctx, game) => {
 
     for (let i = 0; i < allTiles.length; i++) {
         let currentTile = allTiles[i]
-        let sprite = game.tileSprite
+        let sprite = game.sprites.tile
 
         if (currentTile.path) {
             switch (currentTile.direction) {
                 case 'north-east':
                 case 'west-south':
-                    sprite = game.southEastSprite
+                    sprite = game.sprites.southEast
                     break
                 case 'north-west':
                 case 'east-south':
-                    sprite = game.southWestSprite
+                    sprite = game.sprites.southWest
                     break
                 case 'south-east':
                 case 'west-north':
-                    sprite = game.northEastSprite
+                    sprite = game.sprites.northEast
                     break
                 case 'south-west':
                 case 'east-north':
-                    sprite = game.northWestSprite
+                    sprite = game.sprites.northWest
                     break
                 case 'north-north':
                 case 'south-south':
-                    sprite = game.northSouthSprite
+                    sprite = game.sprites.northSouth
                     break
                 case 'east-east':
                 case 'west-west':
-                    sprite = game.westEastSprite
+                    sprite = game.sprites.westEast
                     break
             }
         }
@@ -179,37 +179,37 @@ export const drawGameBoard = (ctx, game) => {
         if (currentTile.special === 'start') {
             switch (currentTile.direction) {
                 case '-north':
-                    sprite = game.startNorthSprite
+                    sprite = game.sprites.startNorth
                     break
                 case '-east':
-                    sprite = game.startEastSprite
+                    sprite = game.sprites.startEast
                     break
                 case '-south':
-                    sprite = game.startSouthSprite
+                    sprite = game.sprites.startSouth
                     break
                 case '-west':
-                    sprite = game.startWestSprite
+                    sprite = game.sprites.startWest
                     break
             }
         } else if (currentTile.special === 'exit') {
             switch (currentTile.direction) {
                 case 'south':
-                    sprite = game.exitNorthSprite
+                    sprite = game.sprites.exitNorth
                     break
                 case 'west':
-                    sprite = game.exitEastSprite
+                    sprite = game.sprites.exitEast
                     break
                 case 'north':
-                    sprite = game.exitSouthSprite
+                    sprite = game.sprites.exitSouth
                     break
                 case 'east':
-                    sprite = game.exitWestSprite
+                    sprite = game.sprites.exitWest
                     break
             }
         }
 
         if (currentTile.special === 'border') {
-            sprite = game.borderSprite
+            sprite = game.sprites.border
         }
 
         ctx.imageSmoothingEnabled = false
@@ -220,13 +220,13 @@ export const drawGameBoard = (ctx, game) => {
 
                 let timerDecimal = game.timer % 1
                 if (timerDecimal <= 0.25) {
-                    sprite = game.arrow1Sprite
+                    sprite = game.sprites.arrow1
                 } else if (timerDecimal <= 0.50) {
-                    sprite = game.arrow2Sprite
+                    sprite = game.sprites.arrow2
                 } else if (timerDecimal <= 0.75) {
-                    sprite = game.arrow3Sprite
+                    sprite = game.sprites.arrow3
                 } else {
-                    sprite = game.arrow4Sprite
+                    sprite = game.sprites.arrow4
                 }
 
                 ctx.imageSmoothingEnabled = false
@@ -244,35 +244,35 @@ export const drawGameBoard = (ctx, game) => {
 
         switch (tower.upgrade) {
             case 1:
-                sprite = game.tower1Sprite
+                sprite = game.sprites.tower1
                 if (tower.attackCooldown <= 0.1) {
-                    sprite = game.tower1Fire1Sprite
+                    sprite = game.sprites.tower1Fire1
                 } else if (tower.attackCooldown <= 0.05) {
-                    sprite = game.tower1Fire2Sprite
+                    sprite = game.sprites.tower1Fire2
                 }
                 break
 
             case 2:
-                sprite = game.tower2Sprite
+                sprite = game.sprites.tower2
                 if (tower.attackCooldown <= 0.1) {
-                    sprite = game.tower2Fire1Sprite
+                    sprite = game.sprites.tower2Fire1
                 } else if (tower.attackCooldown <= 0.05) {
-                    sprite = game.tower2Fire2Sprite
+                    sprite = game.sprites.tower2Fire2
                 }
                 break
 
             case 3:
                 ctx.filter = 'invert(100%)'
-                sprite = game.tower2Sprite
+                sprite = game.sprites.tower2
                 if (tower.attackCooldown <= 0.1) {
-                    sprite = game.tower2Fire1Sprite
+                    sprite = game.sprites.tower2Fire1
                 } else if (tower.attackCooldown <= 0.05) {
-                    sprite = game.tower2Fire2Sprite
+                    sprite = game.sprites.tower2Fire2
                 }
                 break
 
             default:
-                sprite = game.tower1Sprite
+                sprite = game.sprites.tower1
         }
 
         ctx.imageSmoothingEnabled = false

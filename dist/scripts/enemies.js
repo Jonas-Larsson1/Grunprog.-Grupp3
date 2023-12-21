@@ -30,7 +30,7 @@ export const updateEnemies = (game) => {
                 game.bullets.splice(bulletIndex, 1)
                 enemy.health--
                 game.playerMoney++
-                addMessage(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, 'yellow', '+', game.coin1Sprite)
+                addMessage(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, 'yellow', '+1', game.sprites.coin1)
                 if (enemy.health <= 0) {
                     addHitEffect(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, bullet.color, enemy.size / 2)
                     game.enemies.splice(index, 1)
@@ -64,8 +64,8 @@ export const updateEnemies = (game) => {
                 enemy.pathIndex++
             } else {
                 game.enemies.splice(index, 1)
+                addMessage(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, 'red', `-${enemy.health}`, game.sprites.flask1)
                 game.playerHealth -= enemy.health
-                addMessage(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, 'red', '-', game.flask1Sprite)
             }
         }
     })
@@ -73,19 +73,19 @@ export const updateEnemies = (game) => {
 
 export const drawEnemies = (ctx, game) => {
     game.enemies.forEach(enemy => {
-        let sprite = game.skull1Sprite
+        let sprite = game.sprites.skull1
 
         if (enemy.animationTimer >= 0.75) {
-            sprite = game.skull1Sprite
+            sprite = game.sprites.skull1
 
         } else if (enemy.animationTimer >= 0.50) {
-            sprite = game.skull2Sprite
+            sprite = game.sprites.skull2
 
         } else if (enemy.animationTimer >= 0.25) {
-            sprite = game.skull3Sprite
+            sprite = game.sprites.skull3
 
         } else {
-            sprite = game.skull4Sprite
+            sprite = game.sprites.skull4
         }
 
         if (enemy.health > 2) {

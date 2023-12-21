@@ -6,6 +6,7 @@ import { updateBullets } from './bullets.js'
 import { drawHitEffects, drawMessages } from './effects.js'
 import { addScore, getHighestScore } from './scores.js'
 import { waveMessage, waveMessageUpdated } from './waves.js'
+import { initSpriteArray, setSpriteSrc } from './spriteHandler.js'
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -66,47 +67,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 const gameSetup = () => {
   game = initializeGame(tileSize, canvas.width, canvas.height, canvas)
-
-  game.tileSprite.src = './sprites/tile.png'
-  game.borderSprite.src = './sprites/border.png'
-
-  game.startNorthSprite.src = './sprites/start-north.png'
-  game.startEastSprite.src = './sprites/start-east.png'
-  game.startSouthSprite.src = './sprites/start-south.png'
-  game.startWestSprite.src = './sprites/start-west.png'
-
-  game.exitNorthSprite.src = './sprites/exit-north.png'
-  game.exitEastSprite.src = './sprites/exit-east.png'
-  game.exitSouthSprite.src = './sprites/exit-south.png'
-  game.exitWestSprite.src = './sprites/exit-west.png'
-
-  game.northEastSprite.src = './sprites/north-east.png'
-  game.northWestSprite.src = './sprites/north-west.png'
-  game.northSouthSprite.src = './sprites/north-south.png'
-  game.southEastSprite.src = './sprites/south-east.png'
-  game.southWestSprite.src = './sprites/south-west.png'
-  game.westEastSprite.src = './sprites/west-east.png'
-
-  game.skull1Sprite.src = './sprites/skull-1.png'
-  game.skull2Sprite.src = './sprites/skull-2.png'
-  game.skull3Sprite.src = './sprites/skull-3.png'
-  game.skull4Sprite.src = './sprites/skull-4.png'
-
-  game.tower1Sprite.src = './sprites/tower1.png'
-  game.tower1Fire1Sprite.src = './sprites/tower1-fire1.png'
-  game.tower1Fire2Sprite.src = './sprites/tower1-fire2.png'
-
-  game.tower2Sprite.src = './sprites/tower2.png'
-  game.tower2Fire1Sprite.src = './sprites/tower2-fire1.png'
-  game.tower2Fire2Sprite.src = './sprites/tower2-fire2.png'
-
-  game.coin1Sprite.src = './sprites/coin-1.png'
-  game.flask1Sprite.src = './sprites/flask-1.png'
-
-  game.arrow1Sprite.src = './sprites/arrow-1.png'
-  game.arrow2Sprite.src = './sprites/arrow-2.png'
-  game.arrow3Sprite.src = './sprites/arrow-3.png'
-  game.arrow4Sprite.src = './sprites/arrow-4.png'
+  console.log(game.sprites)
+  setSpriteSrc(game.sprites)
 }
 
 const startGame = () => {
@@ -243,6 +205,51 @@ const initializeGame = (tileSize, width, height, canvas) => {
 
   estimatedDifficultyElement.textContent = estimatedDifficulty
 
+  const spriteNames = [
+    'tile',
+    'border',
+    
+    'startNorth',
+    'startEast',
+    'startSouth',
+    'startWest',
+    
+    'exitNorth',
+    'exitEast',
+    'exitSouth',
+    'exitWest',
+    
+    'northEast',
+    'northWest',
+    'northSouth',
+    'southEast',
+    'southWest',
+    'westEast',
+    
+    'skull1',
+    'skull2',
+    'skull3',
+    'skull4',
+    
+    'tower1',
+    'tower1Fire1',
+    'tower1Fire2',
+    
+    'tower2',
+    'tower2Fire1',
+    'tower2Fire2',
+    
+    'coin1',
+    'flask1',
+    
+    'arrow1',
+    'arrow2',
+    'arrow3',
+    'arrow4',
+  ]
+
+  const sprites = initSpriteArray(spriteNames)
+
   return {
     tileSize,
     width,
@@ -270,46 +277,7 @@ const initializeGame = (tileSize, width, height, canvas) => {
     playerHealth: 15,
     playerMoney: 20,
 
-    tileSprite: new Image(),
-    borderSprite: new Image(),
-
-    startNorthSprite: new Image(),
-    startEastSprite: new Image(),
-    startSouthSprite: new Image(),
-    startWestSprite: new Image(),
-
-    exitNorthSprite: new Image(),
-    exitEastSprite: new Image(),
-    exitSouthSprite: new Image(),
-    exitWestSprite: new Image(),
-
-    northEastSprite: new Image(),
-    northWestSprite: new Image(),
-    northSouthSprite: new Image(),
-    southEastSprite: new Image(),
-    southWestSprite: new Image(),
-    westEastSprite: new Image(),
-
-    skull1Sprite: new Image(),
-    skull2Sprite: new Image(),
-    skull3Sprite: new Image(),
-    skull4Sprite: new Image(),
-
-    tower1Sprite: new Image(),
-    tower1Fire1Sprite: new Image(),
-    tower1Fire2Sprite: new Image(),
-
-    tower2Sprite: new Image(),
-    tower2Fire1Sprite: new Image(),
-    tower2Fire2Sprite: new Image(),
-
-    coin1Sprite: new Image(),
-    flask1Sprite: new Image(),
-
-    arrow1Sprite: new Image(),
-    arrow2Sprite: new Image(),
-    arrow3Sprite: new Image(),
-    arrow4Sprite: new Image(),
+    sprites: sprites,
 
     isPaused: false,
     started: false,
