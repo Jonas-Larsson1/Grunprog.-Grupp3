@@ -30,7 +30,7 @@ export const updateEnemies = (game) => {
                 game.bullets.splice(bulletIndex, 1)
                 enemy.health--
                 game.playerMoney++
-                addMessage(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, 'yellow', '+1', game.sprites.coin1)
+                addMessage(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, 'yellow', '+ 1', game.sprites.coin1)
                 if (enemy.health <= 0) {
                     addHitEffect(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, bullet.color, enemy.size / 2)
                     game.enemies.splice(index, 1)
@@ -64,7 +64,7 @@ export const updateEnemies = (game) => {
                 enemy.pathIndex++
             } else {
                 game.enemies.splice(index, 1)
-                addMessage(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, 'red', `-${enemy.health}`, game.sprites.flask1)
+                addMessage(game, enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, 'red', `- ${enemy.health}`, game.sprites.flask1)
                 game.playerHealth -= enemy.health
             }
         }

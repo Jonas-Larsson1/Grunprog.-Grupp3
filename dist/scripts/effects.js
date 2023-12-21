@@ -9,11 +9,11 @@ export const addMessage = (game, x, y, color, message, sprite) => {
 export const drawMessages = (ctx, game) => {
     game.messages.forEach((message, index) => {
         ctx.fillStyle = message.color
-        ctx.font = `${game.tileSize / 4}px monospace`
+        ctx.font = `${game.tileSize / 4}px MedievalSharp`
         ctx.fillText(message.message, message.x, message.y)
 
         if (message.sprite) {
-            ctx.drawImage(message.sprite, message.x + game.tileSize / 3, message.y - game.tileSize / 5, game.tileSize / 4, game.tileSize / 4)
+            ctx.drawImage(message.sprite, Math.floor(message.x + game.tileSize / 3), Math.floor(message.y - game.tileSize / 5), game.tileSize / 4, game.tileSize / 4)
         }
 
         message.y -= (game.deltaTime * 15)
